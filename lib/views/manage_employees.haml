@@ -66,9 +66,32 @@
         "task_name": task_name
       }),
       success: function(data) {
-        task_added(employee_name);
+        task_deleted(employee_name);
       },
     });
+  }
+
+  task_deleted = function(employee_name) {
+    window.location.reload();
+  }
+
+
+  set_working_for_employee = function(employee_name) {
+    var working = $(':input[type=checkbox, id="check_working_' + employee_name + '"]:checked').val() !== undefined;
+
+    $.ajax({
+      url: "/api/set_working_for_employee?" + encode_query_data({
+        "employee_name": employee_name,
+        "working": working
+      }),
+      success: function(data) {
+        working_for_employee_set(employee_name);
+      },
+    });
+  }
+
+  working_for_employee_set = function(employee_name) {
+    window.location.reload();
   }
 
 %h1
@@ -76,7 +99,7 @@
 %div
   - if engine.get_all_employees.empty?
     No employees defined yet.
-  -else
+  - else
     %table
       %tr
         %th Name
@@ -84,8 +107,15 @@
       - engine.get_all_employees.each do |employee|
         %tr
           %td
-            #{employee[:name]}
-            %input{:type => "submit", :value => "Delete", :onclick => "del_employee(\"#{employee[:name]}\")"}
+            %div
+              #{employee[:name]}
+            %div
+              - if employee[:working]
+                %input{:id => "check_working_#{employee[:name]}", :type => "checkbox", :checked => "checked", :onchange => "set_working_for_employee(\"#{employee[:name]}\")"} working
+              - else
+                %input{:id => "check_working_#{employee[:name]}", :type => "checkbox", :onchange => "set_working_for_employee(\"#{employee[:name]}\")"} working
+            %div
+              %input{:type => "submit", :value => "Delete", :onclick => "del_employee(\"#{employee[:name]}\")"}
           %td
             %table
               %tr

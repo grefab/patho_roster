@@ -70,6 +70,16 @@ get '/api/del_task_from_employee' do
   redirect to("/manage_employees")
 end
 
+get '/api/set_working_for_employee' do
+  employee_name = params[:employee_name]
+  working = params[:working]
+
+  engine.set_employee_working employee_name, working
+
+  redirect to("/manage_employees")
+end
+
+
 
 # TASKS
 

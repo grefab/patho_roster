@@ -19,7 +19,15 @@ class EmployeeManager
   end
 
   def set_employee_working_by_name(employee_name, working)
-    get_employee_by_name(employee_name)[:working] = working
+    set_working = false;
+
+    if !!working == working # .kind_of? Boolean
+      set_working = working
+    elsif working.kind_of? String
+      set_working = working == "true"
+    end
+
+    get_employee_by_name(employee_name)[:working] = set_working
   end
 
   def get_all_employees

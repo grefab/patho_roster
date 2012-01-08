@@ -14,6 +14,10 @@ class Engine
 
   # EMPLOYEES
 
+  def get_all_employees
+    @employee_manager.get_all_employees
+  end
+
   def add_employee employee_name
     @employee_manager.add_employee employee_name
   end
@@ -22,8 +26,8 @@ class Engine
     @employee_manager.del_employee employee_name
   end
 
-  def get_all_employees
-    @employee_manager.get_all_employees
+  def set_employee_working employee_name, working
+    @employee_manager.set_employee_working_by_name employee_name, working
   end
 
 
@@ -56,8 +60,10 @@ class Engine
     employees = @employee_manager.get_all_employees
     workload_per_employees = Array.new
     employees.each do |employee|
-      get_tasks_per_employee(employee[:name]).each do |task|
-        workload_per_employees << {:workload_per_employee => {:name => employee[:name], :task_name => task[0], :task_workload => task[1]}}
+      if employee[:working] # only export working employees
+        get_tasks_per_employee(employee[:name]).each do |task|
+          workload_per_employees << {:workload_per_employee => {:name => employee[:name], :task_name => task[0], :task_workload => task[1]}}
+        end
       end
     end
 
