@@ -93,11 +93,11 @@ end
 # SOLUTIONS
 
 get '/solve_problem' do
-  stdout = `../logic/go.sh`
+  input_data = engine.to_json
+  File.open("../logic/input.json", 'w') {|f| f.write(input_data) }
+  stdout = `../logic/go.sh ../logic/input.json`
 
-  puts stdout
-
-  haml :solve_problem
+  haml :solve_problem, :locals => {:output => stdout}
 end
 
 get '/show_result' do
