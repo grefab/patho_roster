@@ -29,8 +29,8 @@ class Engine
 
   # TASKS
 
-  def get_all_tasks
-    @task_manager.get_task_list
+  def get_tasks
+    @task_manager.get_tasks
   end
 
   def get_tasks_per_employee employee_name

@@ -10,7 +10,10 @@ describe "working TaskManager" do
   end
 
   it "should contain a certain list of tasks" do
-    @task_manager.get_task_list.should == ["registrering", "lis_makro", "bi_makro", "fremforing", "stoping", "mikro", "farging", "flyt", "bord", "immun"]
+    task_list = @task_manager.get_tasks.inject(Array.new) do |result, task|
+      result << task[:name]
+    end
+    task_list.should == ["registrering", "lis_makro", "bi_makro", "fremforing", "stoping", "mikro", "farging", "flyt", "bord", "immun"]
   end
 
   it "should be able to retrieve specific tasks by name" do

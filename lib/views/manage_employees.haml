@@ -101,9 +101,9 @@
               %tr
                 %td
                   %select{:id => "new_task_for_" + employee[:name]}
-                    - engine.get_all_tasks.each do |task|
+                    - engine.get_tasks.each do |task|
                       %option
-                        #{task}
+                        #{task[:name]}
 
                 %td
                   %input{:id => "new_workload_for_" + employee[:name], :type => "text"}

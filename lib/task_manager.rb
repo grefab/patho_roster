@@ -18,10 +18,6 @@ class TaskManager
     @tasks
   end
 
-  def get_task_list
-    @tasks.inject(Array.new) { |result, task| result << task[:name] }
-  end
-
   def get_task_by_name task_name
     @tasks.each { |task| return task if task[:name] == task_name }
     nil
