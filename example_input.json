@@ -4,35 +4,35 @@
       "workload_per_employee": {
         "name": "Anna",
         "task_name": "bi_makro",
-        "task_workload": "23"
+        "task_workload": 23
       }
     },
     {
       "workload_per_employee": {
         "name": "Anna",
         "task_name": "bord",
-        "task_workload": "100"
+        "task_workload": 100
       }
     },
     {
       "workload_per_employee": {
         "name": "Zacharia",
         "task_name": "mikro",
-        "task_workload": "12"
+        "task_workload": 12
       }
     },
     {
       "workload_per_employee": {
         "name": "Zacharia",
         "task_name": "stoping",
-        "task_workload": "999"
+        "task_workload": 999
       }
     },
     {
       "workload_per_employee": {
         "name": "Zacharia",
         "task_name": "fremforing",
-        "task_workload": "3"
+        "task_workload": 3
       }
     }
   ],
