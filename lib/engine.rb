@@ -48,11 +48,11 @@ class Engine
 
   # EXPORT
   def to_json
-    data = {:workload_per_employees => get_workload_per_employees, :tasks => get_tasks}
+    data = {:workload_per_employees => get_workload_per_employees_for_export, :tasks => get_tasks_for_export}
     JSON.pretty_generate data
   end
 
-  def get_workload_per_employees
+  def get_workload_per_employees_for_export
     employees = @employee_manager.get_all_employees
     workload_per_employees = Array.new
     employees.each do |employee|
@@ -64,7 +64,7 @@ class Engine
     workload_per_employees
   end
 
-  def get_tasks
+  def get_tasks_for_export
     tasks = @task_manager.get_tasks
     tasks.inject(Array.new) do |result, task|
       result << {:task => {:name => task[:name], :cap_min => task[:cap_min], :cap_max => task[:cap_max], :workload => task[:workload]}}
