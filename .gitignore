@@ -1,5 +1,6 @@
 logic/input.json
 logic/tmp/*
+!logic/tmp/_dummy_file
 lib/public/css/.sass-cache/
 .bundle/
 .idea/
