@@ -1,0 +1,1 @@
+{"workload_per_employees":[{"workload_per_employee":{"name":"emp1","task_name":"registrering","task_workload":1}},{"workload_per_employee":{"name":"emp2","task_name":"lis_makro","task_workload":1}}],"tasks":[{"task":{"name":"registrering","cap_min":1,"cap_max":1,"workload":1}},{"task":{"name":"lis_makro","cap_min":1,"cap_max":2,"workload":1}}]}
