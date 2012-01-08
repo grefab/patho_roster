@@ -109,21 +109,18 @@
                 %tr
                   %td
                     #{task[0]}
+                  %td
+                    #{task[1]}
                     %input{:type => "submit", :value => "Delete", :onclick => "del_task_from_employee(\"#{task[0]}\", \"#{employee[:name]}\")"}
-
-                  %td #{task[1]}
               %tr
                 %td
                   %select{:id => "new_task_for_" + employee[:name]}
                     - engine.get_tasks.each do |task|
                       %option
                         #{task[:name]}
-
                 %td
                   %input{:id => "new_workload_for_" + employee[:name], :type => "text"}
                   %input{:type => "submit", :value => "Add", :onclick => "add_task(\"#{employee[:name]}\")"}
-
-%p
 
 %div
   %label{:for => "new_employee_name"} Name:

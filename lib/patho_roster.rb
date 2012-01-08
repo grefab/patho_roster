@@ -93,6 +93,10 @@ end
 # SOLUTIONS
 
 get '/solve_problem' do
+  stdout = `../logic/go.sh`
+
+  puts stdout
+
   haml :solve_problem
 end
 
