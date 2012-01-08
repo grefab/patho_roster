@@ -1,20 +1,11 @@
 {
 -- input from webinterface
 
-	employees:
-	[
-		employee: { name: EMPLOYEE_NAME }
-	],
-
 	workload_per_employees:
 	[
-		workload_per_employee: { name: EMPLOYEE_NAME, workload: EMPLOYEE_WORKLOAD }
+		workload_per_employee: { name: EMPLOYEE_NAME, task_name: TASK_NAME, task_workload: TASK_WORKLOAD }
 	],
 
-	starting_workload: STARTING_WORKLOAD,
-
-
--- harcoded (workflow)
 
 	tasks:
 	[
