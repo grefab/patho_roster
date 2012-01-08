@@ -12,7 +12,7 @@ describe "working EmployeeManager" do
   end
 
   after :each do
-    @employee_manager.del_all_employees
+    @employee_manager.reset
     @employee_manager.get_all_employees.size.should == 0
   end
 
@@ -33,7 +33,7 @@ describe "working EmployeeManager" do
     all_employees = @employee_manager.get_all_employees
 
     all_employees.size.should == 1
-    all_employees[0].should == {:name => "Barfoo", :workload => 0}
+    all_employees[0].should == {:name => "Barfoo", :workload => 0, :id => 1}
   end
 
   it "should delete an employee by name" do
@@ -43,19 +43,19 @@ describe "working EmployeeManager" do
     all_employees = @employee_manager.get_all_employees
 
     all_employees.size.should == 1
-    all_employees[0].should == {:name => "Barfoo", :workload => 0}
+    all_employees[0].should == {:name => "Barfoo", :workload => 0, :id => 1}
   end
 
   it "should set workload correctly" do
     create_stub_employees
 
-    @employee_manager.set_employee_workload 1, 23
+    @employee_manager.set_employee_workload_by_name "Barfoo", 23
 
     all_employees = @employee_manager.get_all_employees
 
     all_employees.size.should == 2
-    all_employees[0].should == {:name => "Foobar", :workload => 0}
-    all_employees[1].should == {:name => "Barfoo", :workload => 23}
+    all_employees[0].should == {:name => "Foobar", :workload => 0, :id => 0}
+    all_employees[1].should == {:name => "Barfoo", :workload => 23, :id => 1}
   end
 
   it "should find employees" do
@@ -69,15 +69,15 @@ describe "working EmployeeManager" do
 
   it "should persist data" do
     create_stub_employees
-    @employee_manager.set_employee_workload 1, 23
+    @employee_manager.set_employee_workload_by_name "Barfoo", 23
 
     another_employee_manager = TestEmployeeManager.new
 
     all_employees = another_employee_manager.get_all_employees
 
     all_employees.size.should == 2
-    all_employees[0].should == {:name => "Foobar", :workload => 0}
-    all_employees[1].should == {:name => "Barfoo", :workload => 23}
+    all_employees[0].should == {:name => "Foobar", :workload => 0, :id => 0}
+    all_employees[1].should == {:name => "Barfoo", :workload => 23, :id => 1}
   end
 
   def create_stub_employees
@@ -85,8 +85,8 @@ describe "working EmployeeManager" do
     @employee_manager.add_employee "Barfoo"
     all_employees = @employee_manager.get_all_employees
 
-    all_employees[0].should == {:name => "Foobar", :workload => 0}
-    all_employees[1].should == {:name => "Barfoo", :workload => 0}
+    all_employees[0].should == {:name => "Foobar", :workload => 0, :id => 0}
+    all_employees[1].should == {:name => "Barfoo", :workload => 0, :id => 1}
   end
 
 end
