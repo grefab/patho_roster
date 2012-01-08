@@ -3,3 +3,4 @@ logic/tmp/*
 lib/public/css/.sass-cache/
 .bundle/
 .idea/
+logic/test_data.lp
