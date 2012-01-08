@@ -7,7 +7,7 @@ class EmployeeTaskMapper
     @tasks_per_employee
   end
 
-  def add_task_to_employee employee, task, workload
+  def map_task_to_employee employee, task, workload
     @tasks_per_employee[employee] ||= {}
     @tasks_per_employee[employee][task] = workload
   end
