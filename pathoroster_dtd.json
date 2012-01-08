@@ -1,0 +1,38 @@
+{
+-- input from webinterface
+
+	employees:
+	[
+		employee: { name: EMPLOYEE_NAME }
+	],
+
+	workload_per_employees:
+	[
+		workload_per_employee: { name: EMPLOYEE_NAME, workload: EMPLOYEE_WORKLOAD }
+	],
+
+	starting_workload: STARTING_WORKLOAD,
+
+
+-- harcoded (workflow)
+
+	tasks:
+	[
+		task: { name: TASK_NAME, cap_min: CAP_MIN, cap_max: CAP_MAX, workload: WORKLOAD }
+	],
+
+
+-- output
+
+	cells:
+	[
+		cell: { employee: EMPLOYEE_NAME, task: TASK_NAME, work_amount: WORK_AMOUNT }
+	],
+
+	sum_row:
+	[
+		sum_cell: { task: TASK_NAME, sum_work: SUM_WORK }
+	]
+
+}
+
