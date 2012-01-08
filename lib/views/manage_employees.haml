@@ -65,7 +65,7 @@
 
 
   set_working_for_employee = function(employee_name) {
-    var working = $(':input[type=checkbox, id="check_working_' + employee_name + '"]:checked').val() !== undefined;
+    var working = $(':input[id="check_working_' + employee_name + '"]:checked').val() !== undefined;
 
     $.ajax({
       url: "/api/set_working_for_employee?" + encode_query_data({
