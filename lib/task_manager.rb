@@ -28,15 +28,15 @@ class TaskManager
   end
 
   def set_cap_min task_name, cap_min
-    (get_task_by_name task_name)[:cap_min] = cap_min
+    (get_task_by_name task_name)[:cap_min] = cap_min.to_i
   end
 
   def set_cap_max task_name, cap_max
-    (get_task_by_name task_name)[:cap_max] = cap_max
+    (get_task_by_name task_name)[:cap_max] = cap_max.to_i
   end
 
   def set_workload task_name, workload
-    (get_task_by_name task_name)[:workload] = workload
+    (get_task_by_name task_name)[:workload] = workload.to_i
   end
 
 end

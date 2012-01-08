@@ -9,7 +9,7 @@ class EmployeeTaskMapper
 
   def map_task_to_employee employee, task, workload
     @tasks_per_employee[employee] ||= {}
-    @tasks_per_employee[employee][task] = workload
+    @tasks_per_employee[employee][task] = workload.to_i
   end
 
   def get_tasks_for_employee employee
