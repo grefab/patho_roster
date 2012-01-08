@@ -8,7 +8,7 @@ class EmployeeManager
     if get_employee_by_name(employee_name) then
       -1 # this employee already exists
     else
-      @employees << {:name => employee_name, :workload => 0}
+      @employees << {:name => employee_name, :working => true}
       (@employees.length) -1
     end
   end
@@ -18,8 +18,8 @@ class EmployeeManager
     @employees.delete_at index
   end
 
-  def set_employee_workload_by_name(employee_name, workload)
-    get_employee_by_name(employee_name)[:workload] = workload
+  def set_employee_working_by_name(employee_name, working)
+    get_employee_by_name(employee_name)[:working] = working
   end
 
   def get_all_employees

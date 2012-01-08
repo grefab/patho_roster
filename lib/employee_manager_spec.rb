@@ -33,19 +33,19 @@ describe "working EmployeeManager" do
     all_employees = @employee_manager.get_all_employees
 
     all_employees.size.should == 1
-    all_employees[0].should == {:name => "Barfoo", :workload => 0}
+    all_employees[0].should == {:name => "Barfoo", :working => true}
   end
 
   it "should set workload correctly" do
     create_stub_employees
 
-    @employee_manager.set_employee_workload_by_name "Barfoo", 23
+    @employee_manager.set_employee_working_by_name "Barfoo", false
 
     all_employees = @employee_manager.get_all_employees
 
     all_employees.size.should == 2
-    all_employees[0].should == {:name => "Foobar", :workload => 0}
-    all_employees[1].should == {:name => "Barfoo", :workload => 23}
+    all_employees[0].should == {:name => "Foobar", :working => true}
+    all_employees[1].should == {:name => "Barfoo", :working => false}
   end
 
   it "should find employees by name" do
@@ -53,20 +53,20 @@ describe "working EmployeeManager" do
 
     employee = @employee_manager.get_employee_by_name "Barfoo"
 
-    employee.should == {:name => "Barfoo", :workload => 0}
+    employee.should == {:name => "Barfoo", :working => true}
   end
 
   it "should persist data" do
     create_stub_employees
-    @employee_manager.set_employee_workload_by_name "Barfoo", 23
+    @employee_manager.set_employee_working_by_name "Barfoo", false
 
     another_employee_manager = TestEmployeeManager.new
 
     all_employees = another_employee_manager.get_all_employees
 
     all_employees.size.should == 2
-    all_employees[0].should == {:name => "Foobar", :workload => 0}
-    all_employees[1].should == {:name => "Barfoo", :workload => 23}
+    all_employees[0].should == {:name => "Foobar", :working => true}
+    all_employees[1].should == {:name => "Barfoo", :working => false}
   end
 
   def create_stub_employees
@@ -74,8 +74,8 @@ describe "working EmployeeManager" do
     @employee_manager.add_employee "Barfoo"
     all_employees = @employee_manager.get_all_employees
 
-    all_employees[0].should == {:name => "Foobar", :workload => 0}
-    all_employees[1].should == {:name => "Barfoo", :workload => 0}
+    all_employees[0].should == {:name => "Foobar", :working => true}
+    all_employees[1].should == {:name => "Barfoo", :working => true}
   end
 
 end
