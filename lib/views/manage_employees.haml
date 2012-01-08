@@ -7,13 +7,6 @@
      return ret.join("&");
   }
 
-  employee_added = function(employee_name) {
-    window.location.reload();
-  }
-
-  employee_deleted = function(employee_name) {
-    window.location.reload();
-  }
 
   add_employee = function() {
     var employee_name = $(':input[id="new_employee_name"]').val();
@@ -26,6 +19,11 @@
     });
   }
 
+  employee_added = function(employee_name) {
+    window.location.reload();
+  }
+
+
   del_employee = function(employee_name) {
     $.ajax({
       url: "/api/delete_employee?" + encode_query_data({"employee_name": employee_name}),
@@ -35,32 +33,81 @@
     });
   }
 
+  employee_deleted = function(employee_name) {
+    window.location.reload();
+  }
+
+
+  add_task = function(employee_name) {
+    var task_name = $('select[id="new_task_for_' + employee_name + '"]').val();
+    var workload = $(':input[id="new_workload_for_' + employee_name + '"]').val();
+
+    $.ajax({
+      url: "/api/map_task_to_employee?" + encode_query_data({
+        "employee_name": employee_name,
+        "task_name": task_name,
+        "workload": workload
+      }),
+      success: function(data) {
+        task_added(employee_name);
+      },
+    });
+  }
+
+  task_added = function(employee_name) {
+    window.location.reload();
+  }
+
+
+  del_task_from_employee = function(task_name, employee_name) {
+    $.ajax({
+      url: "/api/del_task_from_employee?" + encode_query_data({
+        "employee_name": employee_name,
+        "task_name": task_name
+      }),
+      success: function(data) {
+        task_added(employee_name);
+      },
+    });
+  }
+
 %h1
   Manage Employees
 %div
-  - if employees.empty?
+  - if engine.get_all_employees.empty?
     No employees defined yet.
   -else
     %table
       %tr
         %th Name
         %th Tasks
-        %th Delete
-      - employees.each do |employee|
+      - engine.get_all_employees.each do |employee|
         %tr
-          %td #{employee[:name]}
+          %td
+            #{employee[:name]}
+            %input{:type => "submit", :value => "Delete", :onclick => "del_employee(\"#{employee[:name]}\")"}
           %td
             %table
               %tr
                 %th Task
                 %th Workload
+              - engine.get_tasks_per_employee(employee[:name]).each do |task|
+                %tr
+                  %td
+                    #{task[0]}
+                    %input{:type => "submit", :value => "Delete", :onclick => "del_task_from_employee(\"#{task[0]}\", \"#{employee[:name]}\")"}
+
+                  %td #{task[1]}
               %tr
                 %td
-                  %input{:type => "text"}
+                  %select{:id => "new_task_for_" + employee[:name]}
+                    - engine.get_all_tasks.each do |task|
+                      %option
+                        #{task}
+
                 %td
-                  %input{:type => "text"}
-          %td
-            %input{:type => "submit", :value => "Delete", :onclick => "del_employee(\"#{employee[:name]}\")"}
+                  %input{:id => "new_workload_for_" + employee[:name], :type => "text"}
+                  %input{:type => "submit", :value => "Add", :onclick => "add_task(\"#{employee[:name]}\")"}
 
 %p
 

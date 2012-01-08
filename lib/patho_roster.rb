@@ -4,7 +4,7 @@ require 'haml'
 require 'uuidtools'
 require 'uri'
 
-require_relative 'employee_manager'
+require_relative 'engine'
 
 set :server, :thin
 
@@ -20,6 +20,7 @@ use Rack::Session::Cookie, :expire_after => 1
 #  username == 'admin' && password == 'secret'
 #end
 
+engine = Engine.new
 
 #
 # ROUTES
@@ -31,15 +32,12 @@ get '/' do
 end
 
 get '/manage_employees' do
-  employee_manager = EmployeeManager.new
-  haml :manage_employees, :locals => {:employees => employee_manager.get_all_employees}
+  haml :manage_employees, :locals => {:engine => engine}
 end
 
 get '/api/add_employee' do
-  name = params[:employee_name]
-
-  employee_manager = EmployeeManager.new
-  id = employee_manager.add_employee name
+  employee_name = params[:employee_name]
+  engine.add_employee employee_name
 
   redirect to("/manage_employees")
 end
@@ -47,11 +45,28 @@ end
 get '/api/delete_employee' do
   employee_name = params[:employee_name]
 
-  employee_manager = EmployeeManager.new
-  employee_manager.del_employee employee_name
+  engine.del_employee employee_name
 
   redirect to("/manage_employees")
 end
+
+get '/api/map_task_to_employee' do
+  employee_name = params[:employee_name]
+  task_name = params[:task_name]
+  workload = params[:workload]
+  engine.map_task_to_employee employee_name, task_name, workload
+
+  redirect to("/manage_employees")
+end
+
+get '/api/del_task_from_employee' do
+  employee_name = params[:employee_name]
+  task_name = params[:task_name]
+  engine.del_task_from_employee employee_name, task_name
+
+  redirect to("/manage_employees")
+end
+
 
 
 get '/solve_problem' do
@@ -66,7 +81,3 @@ end
 get '/show_last_result' do
   haml :show_result
 end
-
-
-
-

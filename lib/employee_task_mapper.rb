@@ -13,7 +13,7 @@ class EmployeeTaskMapper
   end
 
   def get_tasks_for_employee employee
-    @tasks_per_employee[employee]
+    @tasks_per_employee[employee] || {}
   end
 
   def del_task_from_employee employee, task
