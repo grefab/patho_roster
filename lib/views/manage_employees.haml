@@ -7,6 +7,10 @@
      return ret.join("&");
   }
 
+  function update_ui() {
+    window.location.reload();
+  }
+
 
   add_employee = function() {
     var employee_name = $(':input[id="new_employee_name"]').val();
@@ -14,13 +18,9 @@
     $.ajax({
       url: "/api/add_employee?" + encode_query_data({"employee_name": employee_name}),
       success: function(data) {
-        employee_added(employee_name);
+        update_ui();
       },
     });
-  }
-
-  employee_added = function(employee_name) {
-    window.location.reload();
   }
 
 
@@ -28,13 +28,9 @@
     $.ajax({
       url: "/api/delete_employee?" + encode_query_data({"employee_name": employee_name}),
       success: function(data) {
-        employee_deleted(employee_name);
+        update_ui();
       },
     });
-  }
-
-  employee_deleted = function(employee_name) {
-    window.location.reload();
   }
 
 
@@ -49,13 +45,9 @@
         "workload": workload
       }),
       success: function(data) {
-        task_added(employee_name);
+        update_ui();
       },
     });
-  }
-
-  task_added = function(employee_name) {
-    window.location.reload();
   }
 
 
@@ -66,13 +58,9 @@
         "task_name": task_name
       }),
       success: function(data) {
-        task_deleted(employee_name);
+        update_ui();
       },
     });
-  }
-
-  task_deleted = function(employee_name) {
-    window.location.reload();
   }
 
 
@@ -85,13 +73,9 @@
         "working": working
       }),
       success: function(data) {
-        working_for_employee_set(employee_name);
+        update_ui();
       },
     });
-  }
-
-  working_for_employee_set = function(employee_name) {
-    window.location.reload();
   }
 
 %h1
