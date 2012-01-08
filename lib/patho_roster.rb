@@ -31,6 +31,9 @@ get '/' do
   haml :index
 end
 
+
+# EMPLOYEES
+
 get '/manage_employees' do
   haml :manage_employees, :locals => {:engine => engine}
 end
@@ -68,6 +71,14 @@ get '/api/del_task_from_employee' do
 end
 
 
+# TASKS
+
+get "/manage_tasks" do
+  haml :manage_tasks, :locals => {:engine => engine}
+end
+
+
+# SOLUTIONS
 
 get '/solve_problem' do
   haml :solve_problem

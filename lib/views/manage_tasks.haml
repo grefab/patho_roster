@@ -1,0 +1,18 @@
+%h1
+  Manage Tasks
+
+%div
+  %table
+    %tr
+      %th Task
+      %th Minimal Capacity
+      %th Maximum Capacity
+      %th Workload
+    - engine.get_tasks.each do |task|
+      %tr
+        %td #{task[:name]}
+        %td #{task[:cap_min]}
+        %td #{task[:cap_max]}
+        %td #{task[:workload]}
+
+
