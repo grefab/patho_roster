@@ -53,7 +53,7 @@ class Engine
   # EXPORT
   def to_json
     data = {:workload_per_employees => get_workload_per_employees_for_export, :tasks => get_tasks_for_export}
-    JSON.pretty_generate data
+    JSON.generate data
   end
 
   def get_workload_per_employees_for_export

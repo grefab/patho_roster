@@ -94,11 +94,17 @@ get '/solve_problem' do
   haml :solve_problem
 end
 
-
 get '/show_result' do
   haml :show_result
 end
 
 get '/show_last_result' do
   haml :show_result
+end
+
+
+# EXPORT
+
+get '/get_exported_data' do
+  engine.to_json
 end
