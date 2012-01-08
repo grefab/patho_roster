@@ -11,7 +11,7 @@ assign(E,T) :- assign(E,T,_).
 in_action(E) :- assign(E,_). 
 
 :- work(Task,_,_,Max), Max+1 { assign(_,Task) }.
-:- work(Task,_,Min,_), { assign(_,Task) } Min-1.
+min(Task) :- work(Task,_,Min,_), { assign(_,Task) } Min-1.
 
 understaffed(Task) :- work(Task,Workload,_,_), #sum [ assign(_,Task,Work) = Work ] Workload-1.
 
@@ -24,3 +24,5 @@ understaffed(Employee,Task,Work) :- understaffed(Task), ground(Employee,Task,Wor
 #maximize[understaffed(Employee,Task,Workload) : ground(Emloyee,Task,Workload) = Workload @2].
 
 #minimize[understaffed(Task) : task(Task) @3].
+
+#minimize[min(_) @4].
