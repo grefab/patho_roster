@@ -32,6 +32,7 @@ get '/' do
 end
 
 
+
 # EMPLOYEES
 
 get '/manage_employees' do
@@ -88,6 +89,7 @@ get "/manage_tasks" do
 end
 
 
+
 # SOLUTIONS
 
 get '/solve_problem' do
@@ -98,9 +100,6 @@ get '/show_result' do
   haml :show_result
 end
 
-get '/show_last_result' do
-  haml :show_result
-end
 
 
 # EXPORT
