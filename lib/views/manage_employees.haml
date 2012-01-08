@@ -1,0 +1,70 @@
+:javascript
+  function encode_query_data(data)
+  {
+     var ret = [];
+     for (var d in data)
+        ret.push(encodeURIComponent(d) + "=" + encodeURIComponent(data[d]));
+     return ret.join("&");
+  }
+
+  employee_added = function(employee_name) {
+    window.location.reload();
+  }
+
+  employee_deleted = function(employee_name) {
+    window.location.reload();
+  }
+
+  add_employee = function() {
+    var employee_name = $(':input[id="new_employee_name"]').val();
+
+    $.ajax({
+      url: "/api/add_employee?" + encode_query_data({"employee_name": employee_name}),
+      success: function(data) {
+        employee_added(employee_name);
+      },
+    });
+  }
+
+  del_employee = function(employee_name) {
+    $.ajax({
+      url: "/api/delete_employee?" + encode_query_data({"employee_name": employee_name}),
+      success: function(data) {
+        employee_deleted(employee_name);
+      },
+    });
+  }
+
+%h1
+  Manage Employees
+%div
+  - if employees.empty?
+    No employees defined yet.
+  -else
+    %table
+      %tr
+        %th Name
+        %th Tasks
+        %th Delete
+      - employees.each do |employee|
+        %tr
+          %td #{employee[:name]}
+          %td
+            %table
+              %tr
+                %th Task
+                %th Workload
+              %tr
+                %td
+                  %input{:type => "text"}
+                %td
+                  %input{:type => "text"}
+          %td
+            %input{:type => "submit", :value => "Delete", :onclick => "del_employee(\"#{employee[:name]}\")"}
+
+%p
+
+%div
+  %label{:for => "new_employee_name"} Name:
+  %input{:type => "text", :id => "new_employee_name"}
+  %input{:type => "submit", :value => "Add", :onclick => "add_employee()"}

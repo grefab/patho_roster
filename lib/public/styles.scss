@@ -1,0 +1,49 @@
+/* colors */
+$bright: #ccc;
+$dark: #333;
+
+/* sizes */
+$pagewidth: 800px;
+
+
+/* basic elements */
+h1{
+    font-weight:bold;
+}
+
+
+/* outlining elements */
+body{
+    height:100%;
+}
+
+html{
+    height:100%;
+    background-color:$dark;
+    font-family:sans-serif;
+}
+
+#wrapper{
+    width:100%;
+    height:100%;
+    margin:auto;
+}
+
+#header{
+    background-color:$dark;
+    color:$bright;
+    padding:0 12px;
+
+    h1{
+        font-size:300%;
+    }
+
+    h2{
+        font-size:130%;
+    }
+}
+
+#content{
+    height:100%;
+}
+
