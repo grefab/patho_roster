@@ -58,13 +58,20 @@ describe "working EmployeeManager" do
     all_employees[1].should == {:name => "Barfoo", :workload => 23, :id => 1}
   end
 
-  it "should find employees" do
+  it "should find employees by name" do
     create_stub_employees
 
     employee = @employee_manager.get_employee_by_name "Barfoo"
 
-    employee[:name].should == "Barfoo"
-    employee[:workload].should == 0
+    employee.should == {:name => "Barfoo", :workload => 0, :id => 1}
+  end
+
+  it "should find employees by id" do
+    create_stub_employees
+
+    employee = @employee_manager.get_employee_by_id 1
+
+    employee.should == {:name => "Barfoo", :workload => 0, :id => 1}
   end
 
   it "should persist data" do
