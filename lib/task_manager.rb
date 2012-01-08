@@ -14,6 +14,10 @@ class TaskManager
     @tasks << {:name => "immun", :cap_min => 2, :cap_max => 3, :workload => 1}
   end
 
+  def get_tasks
+    @tasks
+  end
+
   def get_task_list
     @tasks.inject(Array.new) { |result, task| result << task[:name] }
   end

@@ -1,3 +1,5 @@
+require "json"
+
 require_relative "employee_manager"
 require_relative "task_manager"
 require_relative "employee_task_mapper"
@@ -43,5 +45,30 @@ class Engine
     @employee_task_mapper.del_task_from_employee employee_name, task_name
   end
 
+
+  # EXPORT
+  def to_json
+    data = {:workload_per_employees => get_workload_per_employees, :tasks => get_tasks}
+    JSON.pretty_generate data
+  end
+
+  def get_workload_per_employees
+    employees = @employee_manager.get_all_employees
+    workload_per_employees = Array.new
+    employees.each do |employee|
+      get_tasks_per_employee(employee[:name]).each do |task|
+        workload_per_employees << {:workload_per_employee => {:name => employee[:name], :task_name => task[0], :task_workload => task[1]}}
+      end
+    end
+
+    workload_per_employees
+  end
+
+  def get_tasks
+    tasks = @task_manager.get_tasks
+    tasks.inject(Array.new) do |result, task|
+      result << {:task => {:name => task[:name], :cap_min => task[:cap_min], :cap_max => task[:cap_max], :workload => task[:workload]}}
+    end
+  end
 
 end

@@ -3,6 +3,7 @@ GEM
   remote: http://gems.github.com/
   specs:
     haml (3.1.4)
+    json (1.6.4)
     rack (1.4.0)
     rack-protection (1.2.0)
       rack
@@ -18,5 +19,6 @@ PLATFORMS
 
 DEPENDENCIES
   haml
+  json
   sinatra
   uuidtools
