@@ -44,11 +44,11 @@ printOne(e(X),Task) :-
 
 first(registrering). 
 edge(registrering,lis_makro).
-%edge(lis_makro,bi_makro).
-%edge(bi_makro,fremforing).
-%edge(fremforing,stoping).
-%edge(stoping,mikro).
-%edge(mikro,farging).
-%edge(farging,flyt).
-%edge(flyt,bord).
-%edge(bord,immun).
+edge(lis_makro,bi_makro).
+edge(bi_makro,fremforing).
+edge(fremforing,stoping).
+edge(stoping,mikro).
+edge(mikro,farging).
+edge(farging,flyt).
+edge(flyt,bord).
+edge(bord,immun).
