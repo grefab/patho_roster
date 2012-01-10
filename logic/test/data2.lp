@@ -54,8 +54,8 @@ perform(Employee,Task,Workload) :-
     info(task,N,Task),
     info(employee,N,Workload). 
 
-first(T) :- info(task,1,T). 
-edge(T1,T2) :- info(task,N,T1), info(task,N+1,T2), N > 0.
+%first(T) :- info(task,1,T). 
+%edge(T1,T2) :- info(task,N,T1), info(task,N+1,T2), N > 0.
 
 
 

@@ -10,7 +10,10 @@ start :-
     write('max;'), printAll(max,X),
     write('workload;'), printAll(workload,X),
     writeN(8,'-'),write(' ;'), printAll(line,X),
-    forall(in_action(E),(write(E),write(;),printAll(e(E),X))).
+    forall(in_action(E),(write(E),write(;),printAll(e(E),X))),
+    writeN(8,'-'),write(' ;'), printAll(line,X),
+    write('sum;'), printAll(sum,X).
+
 
 printAll(What,Node) :- 
     printOne(What,Node),
@@ -39,8 +42,25 @@ printOne(workload,X) :-
 
 printOne(e(X),Task) :-
     (assign(X,Task,Workload) ->
-    (write(Workload),write(';'));
+    (   write(Workload),
+        ground(X,Task,Fraction),
+        write(' ('),
+        write(Fraction),
+        write('%)'), 
+        write(';')
+    );
     write(' ;')).
+
+printOne(sum,Task) :-
+    findall(X,assign(_,Task,X),L),
+    sumlist(L,Sum),
+    write(Sum),
+    write(' ('),
+    work(Task,Workload,_,_),
+    Fraction is round(100*Sum/Workload),
+    write(Fraction),
+    write('%)'), 
+    write(';').
 
 first(registrering). 
 edge(registrering,lis_makro).
