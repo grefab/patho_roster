@@ -19,9 +19,9 @@ ground(Employee,Task,(100*Work)/Workload) :- perform(Employee,Task,Work), work(T
 
 understaffed(Employee,Task,Work) :- understaffed(Task), ground(Employee,Task,Work), assign(Employee,Task). 
 
-#maximize[assign(Employee,Task) : ground(Emloyee,Task,Work)  = Work @1].
+#maximize[assign(Employee,Task) : ground(Employee,Task,Work)  = Work @1].
 
-#maximize[understaffed(Employee,Task,Workload) : ground(Emloyee,Task,Workload) = Workload @2].
+#maximize[understaffed(Employee,Task,Workload) : ground(Employee,Task,Workload) = Workload @2].
 
 #minimize[understaffed(Task) : task(Task) @3].
 
