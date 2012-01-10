@@ -1,7 +1,5 @@
 info(task,x,registrering,lis_makro,bi_makro,fremforing,stoping,mikro,farging,flyt,bord,immun).
-
 info(workload,x,1,1,140,1,1,700,1,1,1,1).
-
 info(max,x,1,2,2,1,2,6,1,1,1,3).
 info(min,x,1,1,1,1,1,2,1,1,1,2).
 
@@ -9,12 +7,12 @@ info(employee,asfl,1,1,120,1,1,280,1,0,1,0).
 info(employee,beno,1,1,110,0,1,200,1,0,1,0).
 info(employee,rabr,1,1,90,0,1,200,1,0,0,0).
 info(employee,hede,1,1,0,0,1,40,0,0,0,0).
-%info(employee,hldr,1,1,85,1,1,200,1,0,1,1).
-%info(employee,iklu,1,1,70,0,1,80,1,0,0,0).
+info(employee,hldr,1,1,85,1,1,200,1,0,1,1).
+info(employee,iklu,1,1,70,0,1,80,1,0,0,0).
 info(employee,irsl,1,0,65,0,1,160,0,0,0,0).
 info(employee,leew,1,1,95,0,1,200,1,0,1,0).
-%info(employee,inyh,1,1,70,0,1,160,1,0,0,0).
-%info(employee,mainas,1,0,80,0,1,200,0,0,0,1).
+info(employee,inyh,1,1,70,0,1,160,1,0,0,0).
+info(employee,mainas,1,0,80,0,1,200,0,0,0,1).
 info(employee,merv,1,1,0,0,1,160,1,0,0,0).
 info(employee,sape,0,0,0,0,1,280,0,0,0,0).
 info(employee,lsiw,1,1,70,1,1,160,1,0,0,0).
@@ -22,12 +20,23 @@ info(employee,uahe,1,1,40,0,1,160,1,0,0,0).
 info(employee,ulan,1,1,70,0,0,0,0,0,0,0).
 info(employee,lleh,0,0,0,0,0,0,0,1,0,0).
 info(employee,kimuls,1,1,70,1,1,80,0,0,0,0).
-%info(employee,fhilde,1,1,0,1,1,120,0,0,0,0).
+info(employee,fhilde,1,1,0,1,1,120,0,0,0,0).
 info(employee,ny,1,1,0,1,1,120,0,0,0,0).
 info(employee,eiij,0,0,0,0,0,0,0,0,0,1).
-%info(employee,mhni,0,0,0,0,0,0,0,0,0,1).
-%info(employee,firene,0,0,0,0,0,0,0,0,0,1).
+info(employee,mhni,0,0,0,0,0,0,0,0,0,1).
+info(employee,firene,0,0,0,0,0,0,0,0,0,1).
 info(employee,brha,0,0,0,0,0,0,0,0,0,1).
+
+info(K,E,1,X) :- info(K,E,X,_,_,_,_,_,_,_,_,_).
+info(K,E,2,X) :- info(K,E,_,X,_,_,_,_,_,_,_,_).
+info(K,E,3,X) :- info(K,E,_,_,X,_,_,_,_,_,_,_).
+info(K,E,4,X) :- info(K,E,_,_,_,X,_,_,_,_,_,_).
+info(K,E,5,X) :- info(K,E,_,_,_,_,X,_,_,_,_,_).
+info(K,E,6,X) :- info(K,E,_,_,_,_,_,X,_,_,_,_).
+info(K,E,7,X) :- info(K,E,_,_,_,_,_,_,X,_,_,_).
+info(K,E,8,X) :- info(K,E,_,_,_,_,_,_,_,X,_,_).
+info(K,E,9,X) :- info(K,E,_,_,_,_,_,_,_,_,X,_).
+info(K,E,10,X) :-info(K,E,_,_,_,_,_,_,_,_,_,X).
 
 info(K,0,X) :- info(K,X,_,_,_,_,_,_,_,_,_,_).
 info(K,1,X) :- info(K,_,X,_,_,_,_,_,_,_,_,_).
@@ -49,10 +58,9 @@ work(Task,Workload,Min,Max) :-
     info(workload,N,Workload).
 
 perform(Employee,Task,Workload) :-
-    info(employee,0,Employee),
     N > 0, Workload > 0,
     info(task,N,Task),
-    info(employee,N,Workload). 
+    info(employee,Employee,N,Workload). 
 
 first(T) :- info(task,1,T). 
 edge(T1,T2) :- info(task,N,T1), info(task,N+1,T2), N > 0.
