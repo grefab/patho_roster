@@ -101,15 +101,11 @@ end
 
 # SOLUTIONS
 
-def calculate_solution
+get '/solve_problem' do
   input_data = engine.to_json
   File.open("../logic/input.json", 'w') {|f| f.write(input_data) }
   stdout = `cd ../logic; ./go.sh input.json`
-  stdout.gsub("\n", "<br/>").gsub(" ", "&nbsp;")
-end
-
-get '/solve_problem' do
-  formatted_solution = calculate_solution
+  formatted_solution = stdout.gsub("\n", "<br/>").gsub(" ", "&nbsp;")
 
   haml :solve_problem, :locals => {:output => formatted_solution}
 end
