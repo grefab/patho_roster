@@ -42,11 +42,15 @@ printOne(workload,X) :-
 
 printOne(e(X),Task) :-
     (assign(X,Task,Workload) ->
-    (   write(Workload),
-        ground(X,Task,Fraction),
+        (
+        findall(Z,assign(_,Task,Z),L),
+        sumlist(L,Sum),
+        work(Task,Total,_,_),
+        Actual is round(Workload * min(1,Total/Sum)),
+        write(Actual),
         write(' ('),
-        write(Fraction),
-        write('%)'), 
+        write(Workload),
+        write(')'),
         write(';')
     );
     write(' ;')).
