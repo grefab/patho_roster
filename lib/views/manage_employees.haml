@@ -82,6 +82,11 @@
 
       $cell.html('<input type="text" style="width: 30px"/>');
       var $input_field = $cell.find("input");
+      var abort_editing = function() {
+        $input_field.remove();
+        $cell.html(old_content);
+      }
+
       var exit_handler = function() {
         var content = $input_field.val();
         $input_field.remove();
@@ -129,9 +134,10 @@
           return false;
         })
         .blur(exit_handler)
-        .keypress(function(event) {
-          if(event.which == 13) {
-            exit_handler();
+        .keydown(function(e) {
+          switch(e.keyCode) {
+            case 13: exit_handler(); break;
+            case 27: abort_editing(); break;
           }
         })
         .focus();
