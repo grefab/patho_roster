@@ -102,6 +102,7 @@ end
 # SOLUTIONS
 
 def calculate_solution
+  input_data = engine.to_json
   File.open("../logic/input.json", 'w') {|f| f.write(input_data) }
   stdout = `cd ../logic; ./go.sh input.json`
   stdout.gsub("\n", "<br/>").gsub(" ", "&nbsp;")
