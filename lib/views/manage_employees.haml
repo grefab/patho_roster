@@ -19,29 +19,16 @@
       url: "/api/add_employee?" + encode_query_data({"employee_name": employee_name}),
       success: function(data) {
         update_ui();
-      },
+      }
     });
   }
-
 
   del_employee = function(employee_name) {
     $.ajax({
       url: "/api/delete_employee?" + encode_query_data({"employee_name": employee_name}),
       success: function(data) {
         update_ui();
-      },
-    });
-  }
-
-  map_task_to_employee = function(employee_name, task_name, workload, success_handler, error_handler) {
-    $.ajax({
-      url: "/api/map_task_to_employee?" + encode_query_data({
-        "employee_name": employee_name,
-        "task_name": task_name,
-        "workload": workload
-      }),
-      success: success_handler,
-      error: error_handler
+      }
     });
   }
 
@@ -63,6 +50,31 @@
     });
   }
 
+
+  map_task_to_employee = function(employee_name, task_name, workload, success_handler, error_handler) {
+    $.ajax({
+      url: "/api/map_task_to_employee?" + encode_query_data({
+        "employee_name": employee_name,
+        "task_name": task_name,
+        "workload": workload
+      }),
+      success: success_handler,
+      error: error_handler
+    });
+  }
+
+  del_task_from_employee = function(employee_name, task_name, success_handler, error_handler) {
+    $.ajax({
+      url: "/api/del_task_from_employee?" + encode_query_data({
+        "employee_name": employee_name,
+        "task_name": task_name
+      }),
+      success: success_handler,
+      error: error_handler
+    });
+  }
+
+
   $(function() {
     $('.changeable_cell').click(function() {
       var $cell = $(this);
@@ -74,17 +86,17 @@
         var content = $input_field.val();
         $input_field.remove();
 
+        // find employee and task for this cell
+        var $tr_employee = $cell.parent();
+        var col = $tr_employee.children().index($cell);
+        var $th_task = $tr_employee.parent().children().first().find(':nth-child('+(col+1)+')');
+
+        var task = $th_task.html().trim();
+        var employee = $tr_employee.children().first().find('.employee_row_header').html().trim();
+
         if(content.match(/^[1-9]\d*$/)) {
           // number we can use
           var number = parseInt(content);
-
-          // find employee and task for this cell
-          var $tr_employee = $cell.parent();
-          var col = $tr_employee.children().index($cell);
-          var $th_task = $tr_employee.parent().children().first().find(':nth-child('+(col+1)+')');
-
-          var task = $th_task.html().trim();
-          var employee = $tr_employee.children().first().find('.employee_row_header').html().trim();
 
           map_task_to_employee(employee, task, number,
             function() {
@@ -97,7 +109,14 @@
 
         } else if(content.match(/^$|^0$/)) {
           // empty or zero, so delete
-          //$cell.html("");
+          del_task_from_employee(employee, task,
+            function() {
+              $cell.html("");
+            },
+            function() {
+              $cell.html("error");
+            }
+          );
         } else {
           // nothing we can handle, so keep old stuff
           $cell.html(old_content);
