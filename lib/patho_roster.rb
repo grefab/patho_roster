@@ -43,7 +43,7 @@ get '/api/add_employee' do
   employee_name = params[:employee_name]
   engine.add_employee employee_name
 
-  response.status = 200
+  halt 200
 end
 
 get '/api/delete_employee' do
@@ -51,7 +51,7 @@ get '/api/delete_employee' do
 
   engine.del_employee employee_name
 
-  response.status = 200
+  halt 200
 end
 
 get '/api/map_task_to_employee' do
@@ -60,7 +60,7 @@ get '/api/map_task_to_employee' do
   workload = params[:workload]
   engine.map_task_to_employee employee_name, task_name, workload
 
-  response.status = 200
+  halt 200
 end
 
 get '/api/del_task_from_employee' do
@@ -68,7 +68,7 @@ get '/api/del_task_from_employee' do
   task_name = params[:task_name]
   engine.del_task_from_employee employee_name, task_name
 
-  response.status = 200
+  halt 200
 end
 
 get '/api/set_working_for_employee' do
@@ -77,7 +77,7 @@ get '/api/set_working_for_employee' do
 
   engine.set_employee_working employee_name, working
 
-  response.status = 200
+  halt 200
 end
 
 
@@ -93,7 +93,7 @@ get '/api/set_cap_min_for_task' do
   cap_min = params[:cap_min]
   engine.set_cap_min_for_task task_name, cap_min
 
-  response.status = 200
+  halt 200
 end
 
 get '/api/set_cap_max_for_task' do
@@ -101,7 +101,7 @@ get '/api/set_cap_max_for_task' do
   cap_max = params[:cap_max]
   engine.set_cap_max_for_task task_name, cap_max
 
-  response.status = 200
+  halt 200
 end
 
 get '/api/set_workload_for_task' do
@@ -109,7 +109,7 @@ get '/api/set_workload_for_task' do
   workload = params[:workload]
   engine.set_workload_for_task task_name, workload
 
-  response.status = 200
+  halt 200
 end
 
 
