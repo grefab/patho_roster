@@ -61,6 +61,14 @@ class Engine
     @task_manager.set_workload task_name, workload
   end
 
+  def set_value_for_task task_name, value_name, value
+    case
+      when value_name.to_s == "cap_min" then set_cap_min_for_task task_name, value
+      when value_name.to_s == "cap_max" then set_cap_max_for_task task_name, value
+      when value_name.to_s == "workload" then set_workload_for_task task_name, value
+    end
+  end
+
 
   # EXPORT
 

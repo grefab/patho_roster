@@ -88,29 +88,15 @@ get "/manage_tasks" do
   haml :manage_tasks, :locals => {:engine => engine}
 end
 
-get '/api/set_cap_min_for_task' do
+get '/api/set_value_for_task' do
   task_name = params[:task_name]
-  cap_min = params[:cap_min]
-  engine.set_cap_min_for_task task_name, cap_min
+  value_name = params[:value_name]
+  value = params[:value]
+  engine.set_value_for_task task_name, value_name, value
 
   halt 200
 end
 
-get '/api/set_cap_max_for_task' do
-  task_name = params[:task_name]
-  cap_max = params[:cap_max]
-  engine.set_cap_max_for_task task_name, cap_max
-
-  halt 200
-end
-
-get '/api/set_workload_for_task' do
-  task_name = params[:task_name]
-  workload = params[:workload]
-  engine.set_workload_for_task task_name, workload
-
-  halt 200
-end
 
 
 # SOLUTIONS
