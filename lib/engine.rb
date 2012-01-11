@@ -30,13 +30,6 @@ class Engine
     @employee_manager.set_employee_working_by_name employee_name, working
   end
 
-
-  # TASKS
-
-  def get_tasks
-    @task_manager.get_tasks
-  end
-
   def get_tasks_per_employee employee_name
     @employee_task_mapper.get_tasks_for_employee employee_name
   end
@@ -50,7 +43,27 @@ class Engine
   end
 
 
+  # TASKS
+
+  def get_tasks
+    @task_manager.get_tasks
+  end
+
+  def set_cap_min_for_task task_name, cap_min
+    @task_manager.set_cap_min task_name, cap_min
+  end
+
+  def set_cap_max_for_task task_name, cap_max
+    @task_manager.set_cap_max task_name, cap_max
+  end
+
+  def set_workload_for_task task_name, workload
+    @task_manager.set_workload task_name, workload
+  end
+
+
   # EXPORT
+
   def to_json
     data = {:workload_per_employees => get_workload_per_employees_for_export, :tasks => get_tasks_for_export}
     JSON.generate data
