@@ -33,33 +33,15 @@
     });
   }
 
-
-  add_task = function(employee_name) {
-    var task_name = $('select[id="new_task_for_' + employee_name + '"]').val();
-    var workload = $(':input[id="new_workload_for_' + employee_name + '"]').val();
-
+  map_task_to_employee = function(employee_name, task_name, workload, success_handler, error_handler) {
     $.ajax({
       url: "/api/map_task_to_employee?" + encode_query_data({
         "employee_name": employee_name,
         "task_name": task_name,
         "workload": workload
       }),
-      success: function(data) {
-        update_ui();
-      },
-    });
-  }
-
-
-  del_task_from_employee = function(task_name, employee_name) {
-    $.ajax({
-      url: "/api/del_task_from_employee?" + encode_query_data({
-        "employee_name": employee_name,
-        "task_name": task_name
-      }),
-      success: function(data) {
-        update_ui();
-      },
+      success: success_handler,
+      error: error_handler
     });
   }
 
@@ -73,10 +55,69 @@
         "working": working
       }),
       success: function(data) {
-        update_ui();
+        //update_ui();
       },
+      error: function() {
+        update_ui();
+      }
     });
   }
+
+  $(function() {
+    $('.changeable_cell').click(function() {
+      var $cell = $(this);
+      var old_content = $cell.html().trim();
+
+      $cell.html('<input type="text" style="width: 30px"/>');
+      var $input_field = $cell.find("input");
+      var exit_handler = function() {
+        var content = $input_field.val();
+        $input_field.remove();
+
+        if(content.match(/^[1-9]\d*$/)) {
+          // number we can use
+          var number = parseInt(content);
+
+          // find employee and task for this cell
+          var $tr_employee = $cell.parent();
+          var col = $tr_employee.children().index($cell);
+          var $th_task = $tr_employee.parent().children().first().find(':nth-child('+(col+1)+')');
+
+          var task = $th_task.html().trim();
+          var employee = $tr_employee.children().first().find('.employee_row_header').html().trim();
+
+          map_task_to_employee(employee, task, number,
+            function() {
+              $cell.html(number);
+            },
+            function() {
+              $cell.html("error");
+            }
+          );
+
+        } else if(content.match(/^$|^0$/)) {
+          // empty or zero, so delete
+          //$cell.html("");
+        } else {
+          // nothing we can handle, so keep old stuff
+          $cell.html(old_content);
+        }
+      }
+
+      $input_field
+        .val(old_content)
+        .click(function() {
+          return false;
+        })
+        .blur(exit_handler)
+        .keypress(function(event) {
+          if(event.which == 13) {
+            exit_handler();
+          }
+        })
+        .focus();
+    });
+  })
 
 %h1
   Manage Employees
@@ -86,41 +127,41 @@
   - else
     %table
       %tr
-        %th Employee
-        %th Tasks
+        %th
+          -# empty because of employee rows
+        - engine.get_tasks.each do |task|
+          %th #{task[:name]}
+      -#%tr
+      -#  %th min
+      -#  - engine.get_tasks.each do |task|
+      -#    %td #{task[:cap_min]}
+      -#%tr
+      -#  %th max
+      -#  - engine.get_tasks.each do |task|
+      -#    %td #{task[:cap_max]}
+      -#%tr
+      -#  %th workload
+      -#  - engine.get_tasks.each do |task|
+      -#    %td #{task[:workload]}
       - engine.get_all_employees.each do |employee|
+        - employee_name = employee[:name]
         %tr
-          %td
-            %div
-              #{employee[:name]}
-            %div
+          %th
+            %span
               - if employee[:working]
-                %input{:id => "check_working_#{employee[:name]}", :type => "checkbox", :checked => "checked", :onchange => "set_working_for_employee(\"#{employee[:name]}\")"} working
+                %input{:id => "check_working_#{employee[:name]}", :type => "checkbox", :checked => "checked", :onchange => "set_working_for_employee(\"#{employee[:name]}\")"}
               - else
-                %input{:id => "check_working_#{employee[:name]}", :type => "checkbox", :onchange => "set_working_for_employee(\"#{employee[:name]}\")"} working
-            %div
+                %input{:id => "check_working_#{employee[:name]}", :type => "checkbox", :onchange => "set_working_for_employee(\"#{employee[:name]}\")"}
+            %span{:class => "employee_row_header"}
+              #{employee_name}
+            %span
               %input{:type => "submit", :value => "Delete", :onclick => "del_employee(\"#{employee[:name]}\")"}
-          %td
-            %table
-              %tr
-                %th Task
-                %th Workload
-              - engine.get_tasks_per_employee(employee[:name]).each do |task|
-                %tr
-                  %td
-                    #{task[0]}
-                  %td
-                    #{task[1]}
-                    %input{:type => "submit", :value => "Delete", :onclick => "del_task_from_employee(\"#{task[0]}\", \"#{employee[:name]}\")"}
-              %tr
-                %td
-                  %select{:id => "new_task_for_" + employee[:name]}
-                    - engine.get_tasks.each do |task|
-                      %option
-                        #{task[:name]}
-                %td
-                  %input{:id => "new_workload_for_" + employee[:name], :type => "text"}
-                  %input{:type => "submit", :value => "Add", :onclick => "add_task(\"#{employee[:name]}\")"}
+          - engine.get_tasks.each do |task|
+            - task_name = task[:name]
+            %td{:class => "changeable_cell"}
+              - tasks_per_employee = engine.get_tasks_per_employee employee_name
+              - if tasks_per_employee.has_key? task_name
+                #{engine.get_tasks_per_employee(employee_name)[task_name]}
 
 %div
   %label{:for => "new_employee_name"} Name:
