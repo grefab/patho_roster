@@ -77,28 +77,28 @@
 
   $(function() {
     $('.changeable_cell').click(function() {
-      var jq_cell = $(this);
-      var old_content = jq_cell.html().trim();
+      var $cell = $(this);
+      var old_content = $cell.html().trim();
 
-      jq_cell.html('<input type="text" style="width: 30px"/>');
-      var jq_input_field = jq_cell.find("input");
+      $cell.html('<input type="text" style="width: 30px"/>');
+      var $input_field = $cell.find("input");
       var abort_editing = function() {
-        jq_input_field.remove();
-        jq_cell.html(old_content);
+        $input_field.remove();
+        $cell.html(old_content);
       }
 
       var exit_handler = function() {
-        var content = jq_input_field.val();
-        jq_input_field.remove();
+        var content = $input_field.val();
+        $input_field.remove();
 
         if(content != old_content) {
           // find employee and task for this cell
-          var jq_tr_employee = jq_cell.parent();
-          var col = jq_tr_employee.children().index(jq_cell);
-          var jq_th_task = jq_tr_employee.parent().children().first().find(':nth-child('+(col+1)+')');
+          var $tr_employee = $cell.parent();
+          var col = $tr_employee.children().index($cell);
+          var $th_task = $tr_employee.parent().children().first().find(':nth-child('+(col+1)+')');
 
-          var task = jq_th_task.html().trim();
-          var employee = jq_tr_employee.children().first().find('.employee_row_header').html().trim();
+          var task = $th_task.html().trim();
+          var employee = $tr_employee.children().first().find('.employee_row_header').html().trim();
 
           if(content.match(/^[1-9]\d*$/)) {
             // number we can use
@@ -106,33 +106,33 @@
 
             map_task_to_employee(employee, task, number,
               function() {
-                jq_cell.html(number);
+                $cell.html(number);
               },
               function() {
-                jq_cell.html("error");
+                $cell.html("error");
               }
             );
           } else if(content.match(/^$|^0$/)) {
             // empty or zero, so delete
             del_task_from_employee(employee, task,
               function() {
-                jq_cell.html("");
+                $cell.html("");
               },
               function() {
-                jq_cell.html("error");
+                $cell.html("error");
               }
             );
           } else {
             // nothing we can handle, so keep old stuff
-            jq_cell.html(old_content);
+            $cell.html(old_content);
           }
         } else {
-          jq_cell.html(old_content);
+          $cell.html(old_content);
         }
       }
 
       // configure input field to behave like we want to
-      jq_input_field
+      $input_field
         .val(old_content)
         .click(function() {
           // chew click events so the table cell does not generate a new input field
