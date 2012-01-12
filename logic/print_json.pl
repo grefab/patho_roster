@@ -5,13 +5,13 @@ write3(X,Y) :- write('\"'), write(X), write(' \('), write(Y), write('%\)\"').
 start :- 
     consult('tmp/foutput.tmp'),
     first(First),
-    write('{\n\n\n\n\nJSON Table:\n\n\{\"cells\":\['),
+    write('\n\n\n\n\nJSON Table:\n\n\{\"cells\":\['),
     findall(X,in_action(X),[A|Es]),
     printAll(e(A),First),
     forall(member(E,Es),(write(',\n'),printAll(e(E),First))),
-    write('\],\n\{\"sum_row\":\['),
+    write('\],\n\"sum_row\":\['),
     printAll(sum,First),
-    write('\n\]\}\}\n').
+    write('\n\]\}\n').
 
 printAll(What,Node) :- 
     printOne(What,Node),
@@ -43,6 +43,7 @@ printOne(sum,Task) :-
     sumlist(L,Sum),
     work(Task,Workload,_,_),
     Fraction is round(100*Sum/Workload),
+    (first(Task)->true;write(',')),
     write('\{'),
     writeA('sum_cell'),
     write(':\{\"task\":'),
