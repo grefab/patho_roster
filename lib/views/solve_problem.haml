@@ -2,6 +2,20 @@
   Solution
 
 %div{:style => "font-family: monospace;"}
+  %table
+    %tr
+      %th
+      - engine.get_tasks.each do |task|
+        %th #{task[:name]}
+    - engine.get_all_employees.each do |employee|
+      %tr
+        %th #{employee[:name]}
+        - engine.get_tasks.each do |task|
+          %td
+            - if c = output[{:task => task, :employee => employee}]
+              =c
+            - else
+              nope
   =output
 
 %div
