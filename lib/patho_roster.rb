@@ -105,7 +105,7 @@ get '/solve_problem' do
   input_data = engine.to_json
   File.open("../logic/input.json", 'w') {|f| f.write(input_data) }
   stdout = `cd ../logic; ./go.sh input.json`
-  raw_solution = stdout.gsub("\n", "<br/>").gsub(" ", "&nbsp;")
+  raw_solution = stdout #.gsub("\n", "<br/>").gsub(" ", "&nbsp;")
 
 =begin
   raw_solution = '
