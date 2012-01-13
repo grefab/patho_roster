@@ -23,7 +23,7 @@
   $(function() {
     $('.changeable_cell').click(function() {
       var $cell = $(this);
-      var old_content = $cell.html().trim();
+      var old_content = $.trim($cell.html());
 
       $cell.html('<input type="text" style="width: 30px"/>');
       var $input_field = $cell.find("input");
@@ -42,8 +42,8 @@
           var col = $tr_task.children().index($cell);
           var $th_value_name = $tr_task.parent().children().first().find(':nth-child('+(col+1)+')');
 
-          var value_name = $th_value_name.html().trim();
-          var task_name = $tr_task.children().first().html().trim();
+          var value_name = $.trim($th_value_name.html());
+          var task_name = $.trim($tr_task.children().first().html());
 
           if(content.match(/^[1-9]\d*$|^$|^0$/)) {
             // number we can use

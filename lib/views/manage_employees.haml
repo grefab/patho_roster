@@ -78,7 +78,7 @@
   $(function() {
     $('.changeable_cell').click(function() {
       var $cell = $(this);
-      var old_content = $cell.html().trim();
+      var old_content = $.trim($cell.html());
 
       $cell.html('<input type="text" style="width: 30px"/>');
       var $input_field = $cell.find("input");
@@ -97,8 +97,8 @@
           var col = $tr_employee.children().index($cell);
           var $th_task = $tr_employee.parent().children().first().find(':nth-child('+(col+1)+')');
 
-          var task = $th_task.html().trim();
-          var employee = $tr_employee.children().first().find('.employee_row_header').html().trim();
+          var task = $.trim($th_task.html());
+          var employee = $.trim($tr_employee.children().first().find('.employee_row_header').html());
 
           if(content.match(/^[1-9]\d*$/)) {
             // number we can use
