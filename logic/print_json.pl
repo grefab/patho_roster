@@ -25,7 +25,7 @@ printOne(e(X),Task) :-
         findall(Z,assign(_,Task,Z),L),
         sumlist(L,Sum),
         work(Task,Total,_,_),
-        Actual is round(Workload * min(1,Total/Sum)),
+        Actual is ceiling(Workload * min(1,Total/Sum)),
         write('\{'),
         writeA('cell'),
         write(':{\"name\":'),
