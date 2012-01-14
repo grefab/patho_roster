@@ -30,5 +30,5 @@
       %th sum
       - engine.get_tasks.each do |task|
         %th
-          = output[:sum_row][task[:name].to_sym]
+          = output[:sum_row] ? output[:sum_row][task[:name].to_sym] : ""
 
