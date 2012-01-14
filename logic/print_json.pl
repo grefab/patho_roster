@@ -5,7 +5,7 @@ write3(X,Y) :- write('\"'), write(X), write(' \('), write(Y), write('%\)\"').
 start :- 
     consult('tmp/foutput.tmp'),
     first(First),
-    write('\n\n\n\n\nJSON Table:\n\n\{\"cells\":\['),
+    write('\{\"cells\":\['),
     findall(X,in_action(X),[A|Es]),
     printAll(e(A),First),
     forall(member(E,Es),(write(',\n'),printAll(e(E),First))),
