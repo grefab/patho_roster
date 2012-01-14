@@ -32,7 +32,6 @@ get '/' do
 end
 
 
-
 # EMPLOYEES
 
 get '/manage_employees' do
@@ -81,7 +80,6 @@ get '/api/set_working_for_employee' do
 end
 
 
-
 # TASKS
 
 get "/manage_tasks" do
@@ -98,12 +96,11 @@ get '/api/set_value_for_task' do
 end
 
 
-
 # SOLUTIONS
 
 get '/solve_problem' do
   input_data = engine.to_json
-  File.open("../logic/input.json", 'w') {|f| f.write(input_data) }
+  File.open("../logic/input.json", 'w') { |f| f.write(input_data) }
   stdout = `cd ../logic; ./go.sh input.json`
   raw_solution = stdout #.gsub("\n", "<br/>").gsub(" ", "&nbsp;")
 
@@ -134,21 +131,26 @@ get '/solve_problem' do
 ';
 =end
 
-  parsed_solution = JSON.parse raw_solution
+  final_data = {}
 
-  cells = {}
-  parsed_solution["cells"].each do |value|
-    c = value["cell"]
-    cells[{:employee => c["name"], :task => c["task"]} ] = c["work_amount"]
+  begin
+    parsed_solution = JSON.parse raw_solution
+
+    cells = {}
+    parsed_solution["cells"].each do |value|
+      c = value["cell"]
+      cells[{:employee => c["name"], :task => c["task"]}] = c["work_amount"]
+    end
+
+    sum_row = {}
+    parsed_solution["sum_row"].each do |value|
+      c = value["sum_cell"]
+      sum_row[c["task"].to_sym] = c["sum_work"]
+    end
+
+    final_data = {:cells => cells, :sum_row => sum_row}
+  rescue
   end
-
-  sum_row = {}
-  parsed_solution["sum_row"].each do |value|
-    c = value["sum_cell"]
-    sum_row[c["task"].to_sym] = c["sum_work"]
-  end
-
-  final_data = {:cells => cells, :sum_row => sum_row}
 
   haml :solve_problem, :locals => {:output => final_data, :engine => engine}
 end
@@ -156,7 +158,6 @@ end
 get '/show_result' do
   haml :show_result
 end
-
 
 
 # EXPORT
