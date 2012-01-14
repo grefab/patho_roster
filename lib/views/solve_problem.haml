@@ -12,7 +12,7 @@
         %th #{employee[:name]}
         - engine.get_tasks.each do |task|
           %td
-            - if c = output[{:task => task, :employee => employee}]
+            - if c = output[:cells][{:task => task, :employee => employee}]
               =c
             - else
               nope
