@@ -104,8 +104,6 @@ get '/solve_problem' do
   stdout = `cd ../logic; ./go.sh input.json`
   raw_solution = stdout #.gsub("\n", "<br/>").gsub(" ", "&nbsp;")
 
-  final_data = {}
-
   begin
     parsed_solution = JSON.parse raw_solution
 
@@ -123,6 +121,7 @@ get '/solve_problem' do
 
     final_data = {:cells => cells, :sum_row => sum_row}
   rescue
+    final_data = {}
   end
 
   haml :solve_problem, :locals => {:output => final_data, :engine => engine}

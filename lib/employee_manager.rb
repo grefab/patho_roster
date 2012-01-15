@@ -19,7 +19,7 @@ class EmployeeManager
   end
 
   def set_employee_working_by_name(employee_name, working)
-    set_working = false;
+    set_working = false
 
     if !!working == working # .kind_of? Boolean
       set_working = working
