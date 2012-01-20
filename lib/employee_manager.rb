@@ -1,7 +1,7 @@
 class Employee
-  def initialize name, working
-    @name = name
-    @working = working
+  def initialize content
+    @name = content[:name]
+    @working = content[:working]
   end
 
   attr_accessor :name
@@ -18,7 +18,7 @@ class EmployeeManager
     if get_employee_by_name(employee_name) then
       -1 # this employee already exists
     else
-      employee = Employee.new employee_name, true
+      employee = Employee.new(name: employee_name, working: true)
       @employees << employee
       (@employees.length) -1
     end
@@ -53,5 +53,4 @@ class EmployeeManager
     @employees.each { |employee| return employee if employee.name == employee_name }
     nil
   end
-
 end

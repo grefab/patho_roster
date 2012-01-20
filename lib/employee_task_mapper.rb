@@ -3,10 +3,10 @@ class EmployeeTaskMapping
   attr_accessor :task
   attr_accessor :workload
 
-  def initialize employee, task, workload
-    @employee = employee
-    @task = task
-    @workload = workload
+  def initialize content
+    @employee = content[:employee]
+    @task = content[:task]
+    @workload = content[:workload]
   end
 
   def describes_same_mapping employee, task
@@ -30,7 +30,7 @@ class EmployeeTaskMapper
   end
 
   def map_task_to_employee employee, task, workload
-    mapping = EmployeeTaskMapping.new employee, task, workload.to_i
+    mapping = EmployeeTaskMapping.new(employee: employee, task: task, workload: workload.to_i)
     @tasks_per_employee << mapping
   end
 
