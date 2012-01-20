@@ -83,7 +83,7 @@ class Engine
     employees.each do |employee|
       if employee.working # only export working employees
         get_tasks_per_employee(employee.name).each do |task|
-          workload_per_employees << {:workload_per_employee => {:name => employee.name, :task_name => task.name, :task_workload => task.workload}}
+          workload_per_employees << {:workload_per_employee => {:name => employee.name, :task_name => task[0], :task_workload => task[1]}}
         end
       end
     end
