@@ -1,3 +1,13 @@
+class Employee
+  def initialize name, working
+    @name = name
+    @working = working
+  end
+
+  attr_accessor :name
+  attr_accessor :working
+end
+
 class EmployeeManager
   def initialize
     @@persistence ||= Array.new
@@ -8,7 +18,8 @@ class EmployeeManager
     if get_employee_by_name(employee_name) then
       -1 # this employee already exists
     else
-      @employees << {:name => employee_name, :working => true}
+      employee = Employee.new employee_name, true
+      @employees << employee
       (@employees.length) -1
     end
   end
@@ -27,7 +38,7 @@ class EmployeeManager
       set_working = working == "true"
     end
 
-    get_employee_by_name(employee_name)[:working] = set_working
+    get_employee_by_name(employee_name).working = set_working
   end
 
   def get_all_employees
@@ -39,7 +50,7 @@ class EmployeeManager
   end
 
   def get_employee_by_name(employee_name)
-    @employees.each { |employee| return employee if employee[:name] == employee_name }
+    @employees.each { |employee| return employee if employee.name == employee_name }
     nil
   end
 

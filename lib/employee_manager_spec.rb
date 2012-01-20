@@ -33,7 +33,8 @@ describe "working EmployeeManager" do
     all_employees = @employee_manager.get_all_employees
 
     all_employees.size.should == 1
-    all_employees[0].should == {:name => "Barfoo", :working => true}
+    all_employees[0].name.should == "Barfoo"
+    all_employees[0].working.should == true
   end
 
   it "should set workload correctly" do
@@ -44,8 +45,10 @@ describe "working EmployeeManager" do
     all_employees = @employee_manager.get_all_employees
 
     all_employees.size.should == 2
-    all_employees[0].should == {:name => "Foobar", :working => true}
-    all_employees[1].should == {:name => "Barfoo", :working => false}
+    all_employees[0].name.should == "Foobar"
+    all_employees[0].working.should == true
+    all_employees[1].name.should == "Barfoo"
+    all_employees[1].working.should == false
   end
 
   it "should find employees by name" do
@@ -53,7 +56,8 @@ describe "working EmployeeManager" do
 
     employee = @employee_manager.get_employee_by_name "Barfoo"
 
-    employee.should == {:name => "Barfoo", :working => true}
+    employee.name.should == "Barfoo"
+    employee.working.should == true
   end
 
   it "should persist data" do
@@ -65,8 +69,10 @@ describe "working EmployeeManager" do
     all_employees = another_employee_manager.get_all_employees
 
     all_employees.size.should == 2
-    all_employees[0].should == {:name => "Foobar", :working => true}
-    all_employees[1].should == {:name => "Barfoo", :working => false}
+    all_employees[0].name.should == "Foobar"
+    all_employees[0].working.should == true
+    all_employees[1].name.should == "Barfoo"
+    all_employees[1].working.should == false
   end
 
   def create_stub_employees
@@ -74,8 +80,10 @@ describe "working EmployeeManager" do
     @employee_manager.add_employee "Barfoo"
     all_employees = @employee_manager.get_all_employees
 
-    all_employees[0].should == {:name => "Foobar", :working => true}
-    all_employees[1].should == {:name => "Barfoo", :working => true}
+    all_employees[0].name.should == "Foobar"
+    all_employees[0].working.should == true
+    all_employees[1].name.should == "Barfoo"
+    all_employees[1].working.should == true
   end
 
 end

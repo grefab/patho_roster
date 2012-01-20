@@ -160,7 +160,7 @@
         %th
           -# empty because of employee rows
         - engine.get_tasks.each do |task|
-          %th #{task[:name]}
+          %th #{task.name}
       -#%tr
       -#  %th min
       -#  - engine.get_tasks.each do |task|
@@ -174,24 +174,22 @@
       -#  - engine.get_tasks.each do |task|
       -#    %td #{task[:workload]}
       - engine.get_all_employees.each do |employee|
-        - employee_name = employee[:name]
         %tr
           %th
             %span
-              - if employee[:working]
-                %input{:id => "check_working_#{employee[:name]}", :type => "checkbox", :checked => "checked", :onchange => "set_working_for_employee(\"#{employee[:name]}\")"}
+              - if employee.working
+                %input{:id => "check_working_#{employee.name}", :type => "checkbox", :checked => "checked", :onchange => "set_working_for_employee(\"#{employee.name}\")"}
               - else
-                %input{:id => "check_working_#{employee[:name]}", :type => "checkbox", :onchange => "set_working_for_employee(\"#{employee[:name]}\")"}
+                %input{:id => "check_working_#{employee.name}", :type => "checkbox", :onchange => "set_working_for_employee(\"#{employee.name}\")"}
             %span{:class => "employee_row_header"}
-              #{employee_name}
+              #{employee.name}
             %span
-              %input{:type => "submit", :value => "Delete", :onclick => "del_employee(\"#{employee[:name]}\")"}
+              %input{:type => "submit", :value => "Delete", :onclick => "del_employee(\"#{employee.name}\")"}
           - engine.get_tasks.each do |task|
-            - task_name = task[:name]
             %td{:class => "changeable_cell"}
-              - tasks_per_employee = engine.get_tasks_per_employee employee_name
-              - if tasks_per_employee.has_key? task_name
-                #{engine.get_tasks_per_employee(employee_name)[task_name]}
+              - tasks_per_employee = engine.get_tasks_per_employee employee.name
+              - if tasks_per_employee.has_key? task.name
+                #{engine.get_tasks_per_employee(employee.name)[task.name]}
 
 %div
   %label{:for => "new_employee_name"} Name:

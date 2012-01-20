@@ -99,10 +99,10 @@
     - engine.get_tasks.each do |task|
       %tr
         %td
-          #{task[:name]}
+          #{task.name}
         %td{:class => "changeable_cell"}
-          #{task[:cap_min]}
+          #{task.cap_min}
         %td{:class => "changeable_cell"}
-          #{task[:cap_max]}
+          #{task.cap_max}
         %td{:class => "changeable_cell"}
-          #{task[:workload]}
+          #{task.workload}
