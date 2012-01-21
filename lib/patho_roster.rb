@@ -4,7 +4,7 @@ require 'haml'
 require 'uuidtools'
 require 'uri'
 
-require_relative 'engine'
+require_relative 'controller/engine'
 
 set :server, :thin
 

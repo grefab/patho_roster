@@ -1,5 +1,5 @@
 require "rspec"
-require_relative "employee_task_mapper"
+require_relative "../controller/employee_task_mapper"
 
 describe "working EmployeeTaskMapper" do
   before :each do

@@ -1,5 +1,5 @@
 require "rspec"
-require_relative "task_manager"
+require_relative "../controller/task_manager"
 
 class TestTaskManager < TaskManager
 end

@@ -1,5 +1,5 @@
 require "rspec"
-require_relative "employee_manager"
+require_relative "../controller/employee_manager"
 
 class TestEmployeeManager < EmployeeManager
 end
