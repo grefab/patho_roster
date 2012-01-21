@@ -1,0 +1,108 @@
+:javascript
+  function encode_query_data(data)
+  {
+     var ret = [];
+     for (var d in data)
+        ret.push(encodeURIComponent(d) + "=" + encodeURIComponent(data[d]));
+     return ret.join("&");
+  }
+
+  set_value_for_task = function(task_name, value_name, value, success_handler, error_handler) {
+    $.ajax({
+      url: "/api/set_value_for_task?" + encode_query_data({
+        "task_name": task_name,
+        "value_name": value_name,
+        "value": value
+      }),
+      success: success_handler,
+      error: error_handler
+    });
+  }
+
+
+  $(function() {
+    $('.changeable_cell').click(function() {
+      var $cell = $(this);
+      var old_content = $.trim($cell.html());
+
+      $cell.html('<input type="text" style="width: 30px"/>');
+      var $input_field = $cell.find("input");
+      var abort_editing = function() {
+        $input_field.remove();
+        $cell.html(old_content);
+      }
+
+      var exit_handler = function() {
+        var content = $input_field.val();
+        $input_field.remove();
+
+        if(content != old_content) {
+          // find employee and task for this cell
+          var $tr_task = $cell.parent();
+          var col = $tr_task.children().index($cell);
+          var $th_value_name = $tr_task.parent().children().first().find(':nth-child('+(col+1)+')');
+
+          var value_name = $.trim($th_value_name.html());
+          var task_name = $.trim($tr_task.children().first().html());
+
+          if(content.match(/^[1-9]\d*$|^$|^0$/)) {
+            // number we can use
+            if(content == '') { content = 0; }
+
+            var number = parseInt(content);
+
+            set_value_for_task(task_name, value_name, number,
+              function() {
+                $cell.html(number);
+              },
+              function() {
+                $cell.html("error");
+              }
+            );
+          } else {
+            // nothing we can handle, so keep old stuff
+            $cell.html(old_content);
+          }
+        } else {
+          $cell.html(old_content);
+        }
+      }
+
+      // configure input field to behave like we want to
+      $input_field
+        .val(old_content)
+        .click(function() {
+          // chew click events so the table cell does not generate a new input field
+          return false;
+        })
+        .blur(exit_handler)
+        .keydown(function(e) {
+          switch(e.keyCode) {
+            case 13: exit_handler(); break;
+            case 27: abort_editing(); break;
+          }
+        })
+        .focus();
+    });
+  });
+
+%h1
+  Manage Tasks
+
+%div
+  %table
+    %tr
+      %th Task
+      %th cap_min
+      %th cap_max
+      %th workload
+    - engine.get_tasks.each do |task|
+      %tr
+        %td
+          #{task.name}
+        %td{:class => "changeable_cell"}
+          #{task.cap_min}
+        %td{:class => "changeable_cell"}
+          #{task.cap_max}
+        %td{:class => "changeable_cell"}
+          #{task.workload}

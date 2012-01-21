@@ -1,0 +1,34 @@
+%h1
+  Solution
+
+%div
+  %table
+    %tr
+      %th
+      - engine.get_tasks.each do |task|
+        %th #{task.name}
+    %tr
+      %th min
+      - engine.get_tasks.each do |task|
+        %th #{task.cap_min}
+    %tr
+      %th max
+      - engine.get_tasks.each do |task|
+        %th #{task.cap_max}
+    %tr
+      %th workload
+      - engine.get_tasks.each do |task|
+        %th #{task.workload}
+    - engine.get_all_employees.each do |employee|
+      %tr
+        %th #{employee.name}
+        - engine.get_tasks.each do |task|
+          %td
+            - if c = output[:cells][{:employee => employee.name, :task => task.name}]
+              =c
+    %tr
+      %th sum
+      - engine.get_tasks.each do |task|
+        %th
+          = output[:sum_row] ? output[:sum_row][task.name.to_sym] : ""
+
