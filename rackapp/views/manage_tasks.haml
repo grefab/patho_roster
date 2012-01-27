@@ -1,19 +1,8 @@
 :javascript
-  function encode_query_data(data)
-  {
-     var ret = [];
-     for (var d in data)
-        ret.push(encodeURIComponent(d) + "=" + encodeURIComponent(data[d]));
-     return ret.join("&");
-  }
-
   set_value_for_task = function(task_name, value_name, value, success_handler, error_handler) {
     $.ajax({
-      url: "/api/set_value_for_task?" + encode_query_data({
-        "task_name": task_name,
-        "value_name": value_name,
-        "value": value
-      }),
+      type: "POST",
+      url: "/api/set/task/" + task_name + "/" + value_name + "/" + value,
       success: success_handler,
       error: error_handler
     });

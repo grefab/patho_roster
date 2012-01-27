@@ -1,12 +1,4 @@
 :javascript
-  function encode_query_data(data)
-  {
-     var ret = [];
-     for (var d in data)
-        ret.push(encodeURIComponent(d) + "=" + encodeURIComponent(data[d]));
-     return ret.join("&");
-  }
-
   function update_ui() {
     window.location.reload();
   }
@@ -16,7 +8,8 @@
     var employee_name = $(':input[id="new_employee_name"]').val();
 
     $.ajax({
-      url: "/api/add_employee?" + encode_query_data({"employee_name": employee_name}),
+      type: "PUT",
+      url: "/api/employee/" + employee_name,
       success: function(data) {
         update_ui();
       }
@@ -25,7 +18,8 @@
 
   del_employee = function(employee_name) {
     $.ajax({
-      url: "/api/delete_employee?" + encode_query_data({"employee_name": employee_name}),
+      type: "DELETE",
+      url: "/api/employee/" + employee_name,
       success: function(data) {
         update_ui();
       }
@@ -37,10 +31,8 @@
     var working = $(':input[id="check_working_' + employee_name + '"]:checked').val() !== undefined;
 
     $.ajax({
-      url: "/api/set_working_for_employee?" + encode_query_data({
-        "employee_name": employee_name,
-        "working": working
-      }),
+      type: "POST",
+      url: "/api/map/working/" + employee_name + "/" + working,
       success: function(data) {
         //update_ui();
       },
@@ -53,11 +45,8 @@
 
   map_task_to_employee = function(employee_name, task_name, workload, success_handler, error_handler) {
     $.ajax({
-      url: "/api/map_task_to_employee?" + encode_query_data({
-        "employee_name": employee_name,
-        "task_name": task_name,
-        "workload": workload
-      }),
+      type: "POST",
+      url: "/api/map/task/" + employee_name + "/" + task_name + "/" + workload,
       success: success_handler,
       error: error_handler
     });
@@ -65,10 +54,8 @@
 
   del_task_from_employee = function(employee_name, task_name, success_handler, error_handler) {
     $.ajax({
-      url: "/api/del_task_from_employee?" + encode_query_data({
-        "employee_name": employee_name,
-        "task_name": task_name
-      }),
+      type: "DELETE",
+      url: "/api/employee/" + employee_name + "/" + task_name,
       success: success_handler,
       error: error_handler
     });

@@ -34,46 +34,44 @@ end
 
 # EMPLOYEES
 
-get '/manage_employees' do
+get '/view/employees' do
   haml :manage_employees, :locals => {:engine => engine}
 end
 
-get '/api/add_employee' do
-  employee_name = params[:employee_name]
+put '/api/employee/:name' do
+  employee_name = params[:name]
   engine.add_employee employee_name
 
   halt 200
 end
 
-get '/api/delete_employee' do
-  employee_name = params[:employee_name]
-
+delete '/api/employee/:name' do
+  employee_name = params[:name]
   engine.del_employee employee_name
 
   halt 200
 end
 
-get '/api/map_task_to_employee' do
-  employee_name = params[:employee_name]
-  task_name = params[:task_name]
+post '/api/map/task/:employee/:task/:workload' do
+  employee_name = params[:employee]
+  task_name = params[:task]
   workload = params[:workload]
   engine.map_task_to_employee employee_name, task_name, workload
 
   halt 200
 end
 
-get '/api/del_task_from_employee' do
-  employee_name = params[:employee_name]
-  task_name = params[:task_name]
+delete '/api/map/task/:employee/:task' do
+  employee_name = params[:employee]
+  task_name = params[:task]
   engine.del_task_from_employee employee_name, task_name
 
   halt 200
 end
 
-get '/api/set_working_for_employee' do
-  employee_name = params[:employee_name]
+post '/api/map/working/:employee/:working' do
+  employee_name = params[:employee]
   working = params[:working]
-
   engine.set_employee_working employee_name, working
 
   halt 200
@@ -82,12 +80,12 @@ end
 
 # TASKS
 
-get "/manage_tasks" do
+get "/view/tasks" do
   haml :manage_tasks, :locals => {:engine => engine}
 end
 
-get '/api/set_value_for_task' do
-  task_name = params[:task_name]
+post '/api/set/task/:task/:value_name/:value' do
+  task_name = params[:task]
   value_name = params[:value_name]
   value = params[:value]
   engine.set_value_for_task task_name, value_name, value
@@ -98,7 +96,7 @@ end
 
 # SOLUTIONS
 
-get '/solve_problem' do
+get '/view/solution' do
   input_data = engine.to_json
   File.open("../logic/input.json", 'w') { |f| f.write(input_data) }
   stdout = `cd ../logic; ./go.sh input.json`
@@ -127,13 +125,13 @@ get '/solve_problem' do
   haml :solve_problem, :locals => {:output => final_data, :engine => engine}
 end
 
-get '/show_result' do
+get '/view/result' do
   haml :show_result
 end
 
 
 # EXPORT
 
-get '/get_exported_data' do
+get '/view/exported_data' do
   engine.to_json
 end
