@@ -3,17 +3,10 @@ require_relative '../models/task'
 class TaskManager
   def initialize
     @tasks = Array.new
+  end
 
-    @tasks << Task.new(name: "registrering", cap_min: 1, cap_max: 1, workload: 1)
-    @tasks << Task.new(name: "lis_makro", cap_min: 1, cap_max: 2, workload: 1)
-    @tasks << Task.new(name: "bi_makro", cap_min: 1, cap_max: 2, workload: 140)
-    @tasks << Task.new(name: "fremforing", cap_min: 1, cap_max: 1, workload: 1)
-    @tasks << Task.new(name: "stoping", cap_min: 1, cap_max: 2, workload: 1)
-    @tasks << Task.new(name: "mikro", cap_min: 2, cap_max: 6, workload: 700)
-    @tasks << Task.new(name: "farging", cap_min: 1, cap_max: 1, workload: 1)
-    @tasks << Task.new(name: "flyt", cap_min: 1, cap_max: 1, workload: 1)
-    @tasks << Task.new(name: "bord", cap_min: 1, cap_max: 1, workload: 1)
-    @tasks << Task.new(name: "immun", cap_min: 2, cap_max: 3, workload: 1)
+  def add_task name, cap_min, cap_max, workload
+    @tasks << Task.new(name: name, cap_min: cap_min, cap_max: cap_max, workload: workload)
   end
 
   def get_tasks
