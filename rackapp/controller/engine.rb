@@ -45,6 +45,10 @@ class Engine
 
   # TASKS
 
+  def add_task task_name, cap_min, cap_max, workload
+    @task_manager.add_task task_name, cap_min, cap_max, workload
+  end
+
   def get_tasks
     @task_manager.get_tasks
   end

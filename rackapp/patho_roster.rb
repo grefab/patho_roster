@@ -52,6 +52,9 @@ delete '/api/employee/:name' do
   halt 200
 end
 
+
+# TASK MAPPING
+
 post '/api/map/task/:employee/:task/:workload' do
   employee_name = params[:employee]
   task_name = params[:task]
@@ -84,7 +87,17 @@ get "/view/tasks" do
   haml :manage_tasks, :locals => {:engine => engine}
 end
 
-post '/api/set/task/:task/:value_name/:value' do
+put '/api/task/:task/:cap_min/:cap_max/:workload' do
+  name = params[:task]
+  cap_min = params[:cap_min]
+  cap_max = params[:cap_max]
+  workload = params[:workload]
+  engine.add_task name, cap_min, cap_max, workload
+
+  halt 200
+end
+
+post '/api/task/:task/:value_name/:value' do
   task_name = params[:task]
   value_name = params[:value_name]
   value = params[:value]

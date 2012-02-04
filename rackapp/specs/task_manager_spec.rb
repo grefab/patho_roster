@@ -26,6 +26,7 @@ describe "working TaskManager" do
   end
 
   it "should be able to retrieve specific tasks by name" do
+    @task_manager.add_task "foobar", 23, 23, 23
     @task_manager.add_task "lis_makro", 1, 2, 1
 
     (@task_manager.get_task_by_name "lis_makro").name.should == "lis_makro"
