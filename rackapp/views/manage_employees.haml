@@ -55,7 +55,7 @@
   del_task_from_employee = function(employee_name, task_name, success_handler, error_handler) {
     $.ajax({
       type: "DELETE",
-      url: "/api/employee/" + employee_name + "/" + task_name,
+      url: "/api/map/task/" + employee_name + "/" + task_name,
       success: success_handler,
       error: error_handler
     });

@@ -21,7 +21,8 @@ class EmployeeTaskMapper
   end
 
   def del_task_from_employee employee, task
-    EmployeeTaskMapping.where(employee: employee, task: task).first.delete
+    employee_task_mapping = EmployeeTaskMapping.where(employee: employee, task: task).first
+    employee_task_mapping.delete if employee_task_mapping
   end
 
   def reset
