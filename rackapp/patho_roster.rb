@@ -3,6 +3,9 @@ require 'sinatra'
 require 'haml'
 require 'uuidtools'
 require 'uri'
+require "mongoid"
+
+Mongoid.configure { |config| config.master = Mongo::Connection.new.db("patho_roster") }
 
 require_relative 'controller/engine'
 
