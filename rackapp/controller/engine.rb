@@ -18,34 +18,34 @@ class Engine
     @employee_manager.get_all_employees
   end
 
-  def add_employee employee_name
+  def add_employee(employee_name)
     @employee_manager.add_employee employee_name
   end
 
-  def del_employee employee_name
+  def del_employee(employee_name)
     @employee_manager.del_employee employee_name
   end
 
-  def set_employee_working employee_name, working
+  def set_employee_working(employee_name, working)
     @employee_manager.set_employee_working_by_name employee_name, working
   end
 
-  def get_tasks_per_employee employee_name
+  def get_tasks_per_employee(employee_name)
     @employee_task_mapper.get_tasks_for_employee employee_name
   end
 
-  def map_task_to_employee employee_name, task_name, workload
+  def map_task_to_employee(employee_name, task_name, workload)
     @employee_task_mapper.map_task_to_employee employee_name, task_name, workload
   end
 
-  def del_task_from_employee employee_name, task_name
+  def del_task_from_employee(employee_name, task_name)
     @employee_task_mapper.del_task_from_employee employee_name, task_name
   end
 
 
   # TASKS
 
-  def add_task task_name, cap_min, cap_max, workload
+  def add_task(task_name, cap_min, cap_max, workload)
     @task_manager.add_task task_name, cap_min, cap_max, workload
   end
 
@@ -53,19 +53,19 @@ class Engine
     @task_manager.get_tasks
   end
 
-  def set_cap_min_for_task task_name, cap_min
+  def set_cap_min_for_task(task_name, cap_min)
     @task_manager.set_cap_min task_name, cap_min
   end
 
-  def set_cap_max_for_task task_name, cap_max
+  def set_cap_max_for_task(task_name, cap_max)
     @task_manager.set_cap_max task_name, cap_max
   end
 
-  def set_workload_for_task task_name, workload
+  def set_workload_for_task(task_name, workload)
     @task_manager.set_workload task_name, workload
   end
 
-  def set_value_for_task task_name, value_name, value
+  def set_value_for_task(task_name, value_name, value)
     case
       when value_name.to_s == "cap_min" then set_cap_min_for_task task_name, value
       when value_name.to_s == "cap_max" then set_cap_max_for_task task_name, value

@@ -10,17 +10,17 @@ class EmployeeTaskMapper
     result
   end
 
-  def map_task_to_employee employee, task, workload
+  def map_task_to_employee(employee, task, workload)
     EmployeeTaskMapping.create(employee: employee, task: task, workload: workload.to_i)
   end
 
-  def get_tasks_for_employee employee
+  def get_tasks_for_employee(employee)
     result = {}
     EmployeeTaskMapping.where(employee: employee).each { |e| result[e.task] = e.workload }
     result
   end
 
-  def del_task_from_employee employee, task
+  def del_task_from_employee(employee, task)
     employee_task_mapping = EmployeeTaskMapping.where(employee: employee, task: task).first
     employee_task_mapping.delete if employee_task_mapping
   end
