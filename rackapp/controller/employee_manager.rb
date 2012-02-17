@@ -5,7 +5,7 @@ class EmployeeManager
     if get_employee_by_name(employee_name) then
       -1 # this employee already exists
     else
-      employee = Employee.create(name: employee_name, working: true)
+      Employee.create(name: employee_name, working: true)
       Employee.count
     end
   end

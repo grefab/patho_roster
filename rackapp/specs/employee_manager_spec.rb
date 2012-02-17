@@ -11,6 +11,7 @@ describe "working EmployeeManager" do
 
   before :each do
     @employee_manager = TestEmployeeManager.new
+    @employee_manager.reset
     @employee_manager.get_all_employees.size.should == 0
   end
 

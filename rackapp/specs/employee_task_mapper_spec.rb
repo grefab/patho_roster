@@ -1,9 +1,17 @@
 require "rspec"
 require_relative "../controller/employee_task_mapper"
 
+require "mongoid"
+Mongoid.configure { |config| config.master = Mongo::Connection.new.db("patho_roster_test") }
+
 describe "working EmployeeTaskMapper" do
   before :each do
     @employee_task_mapper = EmployeeTaskMapper.new
+    @employee_task_mapper.reset
+  end
+
+  after :each do
+    @employee_task_mapper.reset
   end
 
   it "should contain a certain list of tasks" do

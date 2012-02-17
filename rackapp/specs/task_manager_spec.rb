@@ -10,6 +10,11 @@ end
 describe "working TaskManager" do
   before :each do
     @task_manager = TaskManager.new
+    @task_manager.reset
+  end
+
+  after :each do
+    @task_manager.reset
   end
 
   it "should contain a certain list of tasks" do

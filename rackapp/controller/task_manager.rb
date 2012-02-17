@@ -30,4 +30,8 @@ class TaskManager
     task.workload = workload.to_i
     task.save
   end
+
+  def reset
+    Task.delete_all
+  end
 end
