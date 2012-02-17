@@ -1,9 +1,8 @@
-class Employee
-  def initialize content
-    @name = content[:name]
-    @working = content[:working]
-  end
+require "mongoid"
 
-  attr_accessor :name
-  attr_accessor :working
+class Employee
+  include Mongoid::Document
+
+  field :name, type: String
+  field :working, type: Boolean, default: true
 end

@@ -1,6 +1,9 @@
 require "rspec"
 require_relative "../controller/employee_manager"
 
+require "mongoid"
+Mongoid.configure { |config| config.master = Mongo::Connection.new.db("patho_roster_test") }
+
 class TestEmployeeManager < EmployeeManager
 end
 
@@ -17,12 +20,12 @@ describe "working EmployeeManager" do
   end
 
   it "should add employee" do
-    (@employee_manager.add_employee "Narfzort").should == 0
-    (@employee_manager.add_employee "Zortnarf").should == 1
+    (@employee_manager.add_employee "Narfzort").should == 1
+    (@employee_manager.add_employee "Zortnarf").should == 2
   end
 
   it "should not add an employee of the same name" do
-    (@employee_manager.add_employee "Narfzort").should == 0
+    (@employee_manager.add_employee "Narfzort").should == 1
     (@employee_manager.add_employee "Narfzort").should == -1
   end
 

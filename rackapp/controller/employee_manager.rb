@@ -1,24 +1,18 @@
 require_relative '../models/employee'
 
 class EmployeeManager
-  def initialize
-    @@persistence ||= Array.new
-    @employees = @@persistence
-  end
-
   def add_employee(employee_name)
     if get_employee_by_name(employee_name) then
       -1 # this employee already exists
     else
-      employee = Employee.new(name: employee_name, working: true)
-      @employees << employee
-      (@employees.length) -1
+      employee = Employee.create(name: employee_name, working: true)
+      Employee.count
     end
   end
 
   def del_employee(employee_name)
-    index = @employees.index get_employee_by_name employee_name
-    @employees.delete_at index
+    employee = get_employee_by_name employee_name
+    employee.delete
   end
 
   def set_employee_working_by_name(employee_name, working)
@@ -30,19 +24,20 @@ class EmployeeManager
       set_working = working == "true"
     end
 
-    get_employee_by_name(employee_name).working = set_working
+    employee = get_employee_by_name(employee_name)
+    employee.working = set_working
+    employee.save
   end
 
   def get_all_employees
-    @employees.clone
+    Employee.all
   end
 
   def reset
-    @employees.clear
+    Employee.delete_all
   end
 
   def get_employee_by_name(employee_name)
-    @employees.each { |employee| return employee if employee.name == employee_name }
-    nil
+    Employee.where(name: employee_name).first
   end
 end
