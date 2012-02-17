@@ -1,32 +1,33 @@
 require_relative '../models/task'
 
 class TaskManager
-  def initialize
-    @tasks = Array.new
-  end
-
   def add_task name, cap_min, cap_max, workload
-    @tasks << Task.new(name: name, cap_min: cap_min, cap_max: cap_max, workload: workload)
+    Task.create(name: name, cap_min: cap_min, cap_max: cap_max, workload: workload)
   end
 
   def get_tasks
-    @tasks
+    Task.all
   end
 
   def get_task_by_name task_name
-    @tasks.each { |task| return task if task.name == task_name }
-    nil
+    Task.where(name: task_name).first
   end
 
   def set_cap_min task_name, cap_min
-    (get_task_by_name task_name).cap_min = cap_min.to_i
+    task = get_task_by_name task_name
+    task.cap_min = cap_min.to_i
+    task.save
   end
 
   def set_cap_max task_name, cap_max
-    (get_task_by_name task_name).cap_max = cap_max.to_i
+    task = get_task_by_name task_name
+    task.cap_max = cap_max.to_i
+    task.save
   end
 
   def set_workload task_name, workload
-    (get_task_by_name task_name).workload = workload.to_i
+    task = get_task_by_name task_name
+    task.workload = workload.to_i
+    task.save
   end
 end

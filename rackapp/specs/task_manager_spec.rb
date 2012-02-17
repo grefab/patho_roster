@@ -1,6 +1,9 @@
 require "rspec"
 require_relative "../controller/task_manager"
 
+require "mongoid"
+Mongoid.configure { |config| config.master = Mongo::Connection.new.db("patho_roster_test") }
+
 class TestTaskManager < TaskManager
 end
 
