@@ -1,0 +1,1 @@
+server 'gregr.de', :app, :web, :primary => true
