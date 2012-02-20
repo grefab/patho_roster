@@ -14,7 +14,7 @@ class Engine
 
   # EMPLOYEES
 
-  def get_all_employees
+  def get_employees
     @employee_manager.get_all_employees
   end
 

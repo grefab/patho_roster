@@ -19,7 +19,7 @@
       %th workload
       - engine.get_tasks.each do |task|
         %th #{task.workload}
-    - engine.get_all_employees.each do |employee|
+    - engine.get_employees.each do |employee|
       %tr
         %th #{employee.name}
         - engine.get_tasks.each do |task|

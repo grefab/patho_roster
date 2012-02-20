@@ -139,7 +139,7 @@
 %h1
   Manage Employees
 %div
-  - if engine.get_all_employees.empty?
+  - if engine.get_employees.empty?
     No employees defined yet.
   - else
     %table
@@ -160,7 +160,7 @@
       -#  %th workload
       -#  - engine.get_tasks.each do |task|
       -#    %td #{task[:workload]}
-      - engine.get_all_employees.each do |employee|
+      - engine.get_employees.each do |employee|
         %tr
           %th
             %span

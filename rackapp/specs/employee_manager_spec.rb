@@ -70,7 +70,7 @@ describe "working EmployeeManager" do
 
     another_employee_manager = TestEmployeeManager.new
 
-    all_employees = another_employee_manager.get_all_employees
+    all_employees = another_employee_manager.get_employees
 
     all_employees.size.should == 2
     all_employees[0].name.should == "Foobar"
