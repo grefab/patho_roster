@@ -42,20 +42,20 @@ del_task_from_employee = function (employee_name, task_name, success_handler, er
     });
 };
 
-set_working_for_employee = function(employee_name, working, success_handler, error_handler) {
-  $.ajax({
-    type: "POST",
-    url: "/api/map/working/" + employee_name + "/" + working,
-      success:success_handler,
-      error:error_handler
-  });
+set_working_for_employee = function (employee_name, working, success_handler, error_handler) {
+    $.ajax({
+        type:"POST",
+        url:"/api/map/working/" + employee_name + "/" + working,
+        success:success_handler,
+        error:error_handler
+    });
 };
 
-set_value_for_task = function(task_name, value_name, value, success_handler, error_handler) {
-  $.ajax({
-    type: "POST",
-    url: "/api/task/" + task_name + "/" + value_name + "/" + value,
-    success: success_handler,
-    error: error_handler
-  });
+set_value_for_task = function (task_name, value_name, value, success_handler, error_handler) {
+    $.ajax({
+        type:"POST",
+        url:"/api/task/" + task_name + "/" + value_name + "/" + value,
+        success:success_handler,
+        error:error_handler
+    });
 };
