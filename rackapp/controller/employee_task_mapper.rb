@@ -11,7 +11,13 @@ class EmployeeTaskMapper
   end
 
   def map_task_to_employee(employee, task, workload)
-    EmployeeTaskMapping.create(employee: employee, task: task, workload: workload.to_i)
+    employee_task_mapping = EmployeeTaskMapping.where(employee: employee, task: task).first
+    if employee_task_mapping
+      employee_task_mapping.workload = workload
+      employee_task_mapping.save
+    else
+      EmployeeTaskMapping.create(employee: employee, task: task, workload: workload.to_i)
+    end
   end
 
   def get_tasks_for_employee(employee)
