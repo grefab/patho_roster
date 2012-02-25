@@ -3,64 +3,11 @@
     window.location.reload();
   }
 
-
-  add_employee = function() {
-    var employee_name = $(':input[id="new_employee_name"]').val();
-
-    $.ajax({
-      type: "PUT",
-      url: "/api/employee/" + employee_name,
-      success: function(data) {
-        update_ui();
-      }
-    });
-  }
-
-  del_employee = function(employee_name) {
-    $.ajax({
-      type: "DELETE",
-      url: "/api/employee/" + employee_name,
-      success: function(data) {
-        update_ui();
-      }
-    });
-  }
-
-
-  set_working_for_employee = function(employee_name) {
+  handle_working = function(employee_name) {
     var working = $(':input[id="check_working_' + employee_name + '"]:checked').val() !== undefined;
 
-    $.ajax({
-      type: "POST",
-      url: "/api/map/working/" + employee_name + "/" + working,
-      success: function(data) {
-        //update_ui();
-      },
-      error: function() {
-        update_ui();
-      }
-    });
+    set_working_for_employee(employee_name, working, null, update_ui)
   }
-
-
-  map_task_to_employee = function(employee_name, task_name, workload, success_handler, error_handler) {
-    $.ajax({
-      type: "POST",
-      url: "/api/map/task/" + employee_name + "/" + task_name + "/" + workload,
-      success: success_handler,
-      error: error_handler
-    });
-  }
-
-  del_task_from_employee = function(employee_name, task_name, success_handler, error_handler) {
-    $.ajax({
-      type: "DELETE",
-      url: "/api/map/task/" + employee_name + "/" + task_name,
-      success: success_handler,
-      error: error_handler
-    });
-  }
-
 
   $(function() {
     $('.changeable_cell').click(function() {
@@ -165,13 +112,13 @@
           %th
             %span
               - if employee.working
-                %input{:id => "check_working_#{employee.name}", :type => "checkbox", :checked => "checked", :onchange => "set_working_for_employee(\"#{employee.name}\")"}
+                %input{:id => "check_working_#{employee.name}", :type => "checkbox", :checked => "checked", :onchange => "handle_working(\"#{employee.name}\")"}
               - else
-                %input{:id => "check_working_#{employee.name}", :type => "checkbox", :onchange => "set_working_for_employee(\"#{employee.name}\")"}
+                %input{:id => "check_working_#{employee.name}", :type => "checkbox", :onchange => "handle_working(\"#{employee.name}\")"}
             %span{:class => "employee_row_header"}
               #{employee.name}
             %span
-              %input{:type => "submit", :value => "Delete", :onclick => "del_employee(\"#{employee.name}\")"}
+              %input{:type => "submit", :value => "Delete", :onclick => "del_employee(\"#{employee.name}\", update_ui)"}
           - engine.get_tasks.each do |task|
             %td{:class => "changeable_cell"}
               - tasks_per_employee = engine.get_tasks_per_employee employee.name
@@ -181,4 +128,4 @@
 %div
   %label{:for => "new_employee_name"} Name:
   %input{:type => "text", :id => "new_employee_name"}
-  %input{:type => "submit", :value => "Add", :onclick => "add_employee()"}
+  %input{:type => "submit", :value => "Add", :onclick => "add_employee($(':input[id=\"new_employee_name\"]').val(), update_ui)"}

@@ -1,14 +1,4 @@
 :javascript
-  set_value_for_task = function(task_name, value_name, value, success_handler, error_handler) {
-    $.ajax({
-      type: "POST",
-      url: "/api/task/" + task_name + "/" + value_name + "/" + value,
-      success: success_handler,
-      error: error_handler
-    });
-  }
-
-
   $(function() {
     $('.changeable_cell').click(function() {
       var $cell = $(this);
