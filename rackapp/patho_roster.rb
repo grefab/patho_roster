@@ -70,11 +70,15 @@ end
 
 # TASK MAPPING
 
-post '/api/map/task/:employee/:task/:workload' do
+post '/api/map/task/:employee/:task' do
   employee_name = params[:employee]
   task_name = params[:task]
-  workload = params[:workload]
-  engine.map_task_to_employee employee_name, task_name, workload
+
+  data = JSON.parse request.body.string
+  workload = data["workload"]
+  quantity = data["quantity"]
+
+  engine.map_task_to_employee employee_name, task_name, workload, quantity
 
   status 200
 end
@@ -87,9 +91,12 @@ delete '/api/map/task/:employee/:task' do
   status 200
 end
 
-post '/api/map/working/:employee/:working' do
+post '/api/map/working/:employee' do
   employee_name = params[:employee]
-  working = params[:working]
+
+  data = JSON.parse request.body.string
+  working = data["working"]
+
   engine.set_employee_working employee_name, working
 
   status 200
@@ -98,20 +105,26 @@ end
 
 # TASKS
 
-put '/api/task/:task/:cap_min/:cap_max/:workload' do
+put '/api/task/:task' do
   name = params[:task]
-  cap_min = params[:cap_min]
-  cap_max = params[:cap_max]
-  workload = params[:workload]
+
+  data = JSON.parse request.body.string
+  cap_min = data["cap_min"]
+  cap_max = data["cap_max"]
+  workload = data["workload"]
+
   engine.add_task name, cap_min, cap_max, workload
 
   status 201
 end
 
-post '/api/task/:task/:value_name/:value' do
+post '/api/task/:task/:value_name' do
   task_name = params[:task]
   value_name = params[:value_name]
-  value = params[:value]
+
+  data = JSON.parse request.body.string
+  value = data["value"]
+
   engine.set_value_for_task task_name, value_name, value
 
   status 200

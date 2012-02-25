@@ -34,7 +34,7 @@ class Engine
     @employee_task_mapper.get_tasks_for_employee employee_name
   end
 
-  def map_task_to_employee(employee_name, task_name, workload)
+  def map_task_to_employee(employee_name, task_name, workload, quantity)
     @employee_task_mapper.map_task_to_employee employee_name, task_name, workload
   end
 
