@@ -22,6 +22,18 @@ add_employee = function (employee_name, success_handler, error_handler) {
     });
 };
 
+set_working_for_employee = function (employee_name, working, success_handler, error_handler) {
+    $.ajax({
+        type:"POST",
+        url:"/api/employee/" + employee_name,
+        data:$.toJSON({
+            "working":working
+        }),
+        success:success_handler,
+        error:error_handler
+    });
+};
+
 del_employee = function (employee_name, success_handler, error_handler) {
     $.ajax({
         type:"DELETE",
@@ -31,10 +43,11 @@ del_employee = function (employee_name, success_handler, error_handler) {
     });
 };
 
+
 map_workload = function (employee_name, task_name, workload, success_handler, error_handler) {
     $.ajax({
         type:"POST",
-        url:"/api/map/task/" + employee_name + "/" + task_name,
+        url:"/api/map/" + employee_name + "/" + task_name,
         data:$.toJSON({
             "workload":workload
         }),
@@ -46,7 +59,7 @@ map_workload = function (employee_name, task_name, workload, success_handler, er
 del_workload = function (employee_name, task_name, success_handler, error_handler) {
     $.ajax({
         type:"DELETE",
-        url:"/api/map/task/" + employee_name + "/" + task_name,
+        url:"/api/map/" + employee_name + "/" + task_name,
         data:$.toJSON({
             "workload":true
         }),
@@ -79,26 +92,6 @@ del_quantity = function (employee_name, task_name, success_handler, error_handle
     });
 };
 
-del_task_from_employee = function (employee_name, task_name, success_handler, error_handler) {
-    $.ajax({
-        type:"DELETE",
-        url:"/api/map/task/" + employee_name + "/" + task_name,
-        success:success_handler,
-        error:error_handler
-    });
-};
-
-set_working_for_employee = function (employee_name, working, success_handler, error_handler) {
-    $.ajax({
-        type:"POST",
-        url:"/api/map/working/" + employee_name,
-        data:$.toJSON({
-            "working":working
-        }),
-        success:success_handler,
-        error:error_handler
-    });
-};
 
 set_value_for_task = function (task_name, value_name, value, success_handler, error_handler) {
     $.ajax({

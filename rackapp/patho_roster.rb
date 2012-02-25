@@ -59,15 +59,8 @@ put '/api/employee/:name' do
   status 201
 end
 
-delete '/api/employee/:name' do
+post '/api/employee/:name' do
   employee_name = params[:name]
-  engine.del_employee employee_name
-
-  status 200
-end
-
-post '/api/map/working/:employee' do
-  employee_name = params[:employee]
 
   data = JSON.parse request.body.read
   working = data["working"]
@@ -77,10 +70,17 @@ post '/api/map/working/:employee' do
   status 200
 end
 
+delete '/api/employee/:name' do
+  employee_name = params[:name]
+  engine.del_employee employee_name
 
-# TASK MAPPING
+  status 200
+end
 
-post '/api/map/task/:employee/:task' do
+
+# MAPPING
+
+post '/api/map/:employee/:task' do
   employee_name = params[:employee]
   task_name = params[:task]
 
@@ -94,7 +94,7 @@ post '/api/map/task/:employee/:task' do
   status 200
 end
 
-delete '/api/map/task/:employee/:task' do
+delete '/api/map/:employee/:task' do
   employee_name = params[:employee]
   task_name = params[:task]
 
