@@ -74,7 +74,7 @@ post '/api/map/task/:employee/:task' do
   employee_name = params[:employee]
   task_name = params[:task]
 
-  data = JSON.parse request.body.string
+  data = JSON.parse request.body.read
   workload = data["workload"]
   quantity = data["quantity"]
 
@@ -94,7 +94,7 @@ end
 post '/api/map/working/:employee' do
   employee_name = params[:employee]
 
-  data = JSON.parse request.body.string
+  data = JSON.parse request.body.read
   working = data["working"]
 
   engine.set_employee_working employee_name, working
@@ -108,7 +108,7 @@ end
 put '/api/task/:task' do
   name = params[:task]
 
-  data = JSON.parse request.body.string
+  data = JSON.parse request.body.read
   cap_min = data["cap_min"]
   cap_max = data["cap_max"]
   workload = data["workload"]
@@ -122,7 +122,7 @@ post '/api/task/:task/:value_name' do
   task_name = params[:task]
   value_name = params[:value_name]
 
-  data = JSON.parse request.body.string
+  data = JSON.parse request.body.read
   value = data["value"]
 
   engine.set_value_for_task task_name, value_name, value
