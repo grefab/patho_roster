@@ -121,8 +121,8 @@ class Engine
     workload_per_employees = Array.new
     employees.each do |employee|
       if employee.working # only export working employees
-        get_tasks_per_employee(employee.name).each do |task|
-          workload_per_employees << {:workload_per_employee => {:name => employee.name, :task_name => task[0], :task_workload => task[1]}}
+        get_mapping_for_employee(employee.name).each do |mapping|
+          workload_per_employees << {:workload_per_employee => {:name => employee.name, :task_name => mapping[0], :task_workload => mapping[1][:workload], :task_quantity => mapping[1][:quantity]}}
         end
       end
     end

@@ -3,12 +3,6 @@
     window.location.reload();
   }
 
-  handle_working = function(employee_name) {
-    var working = $(':input[id="check_working_' + employee_name + '"]:checked').val() !== undefined;
-
-    set_working_for_employee(employee_name, working, null, update_ui)
-  }
-
   $(function() {
     $('.changeable_cell').click(function() {
       var $cell = $(this);
@@ -110,20 +104,13 @@
       - engine.get_employees.each do |employee|
         %tr
           %th
-            %span
-              - if employee.working
-                %input{:id => "check_working_#{employee.name}", :type => "checkbox", :checked => "checked", :onchange => "handle_working(\"#{employee.name}\")"}
-              - else
-                %input{:id => "check_working_#{employee.name}", :type => "checkbox", :onchange => "handle_working(\"#{employee.name}\")"}
             %span{:class => "employee_row_header"}
               #{employee.name}
-            %span
-              %input{:type => "submit", :value => "Delete", :onclick => "del_employee(\"#{employee.name}\", update_ui)"}
           - engine.get_tasks.each do |task|
             %td{:class => "changeable_cell"}
               - mapping_per_employee = engine.get_mapping_for_employee employee.name
-              - if mapping_per_employee[:quantity].has_key? task.name
-                #{mapping_per_employee[:quantity][task.name]}
+              - if mapping_per_employee[task.name] && mapping_per_employee[task.name].has_key?(:quantity)
+                #{mapping_per_employee[task.name][:quantity]}
 
 %div
   %label{:for => "new_employee_name"} Name:

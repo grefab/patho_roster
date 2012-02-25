@@ -18,10 +18,11 @@ class EmployeeTaskMapper
   end
 
   def get_mapping_for_employee(employee)
-    result = {workload: {}, quantity: {}}
+    result = {}
     EmployeeTaskMapping.where(employee: employee).each do |e|
-      result[:workload][e.task] = e.workload
-      result[:quantity][e.task] = e.quantity
+      result[e.task] = {}
+      result[e.task][:workload] = e.workload
+      result[e.task][:quantity] = e.quantity
     end
 
     result
