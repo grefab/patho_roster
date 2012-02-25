@@ -24,7 +24,7 @@
         %th #{employee.name}
         - engine.get_tasks.each do |task|
           %td
-            - if output[:cells] && c = output[:cells][{:employee => employee.name, :task => task.name}]
+            - if c = output[:cells][{:employee => employee.name, :task => task.name}]
               =c
     %tr
       %th sum
