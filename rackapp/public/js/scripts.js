@@ -71,7 +71,7 @@ del_workload = function (employee_name, task_name, success_handler, error_handle
 map_quantity = function (employee_name, task_name, quantity, success_handler, error_handler) {
     $.ajax({
         type:"POST",
-        url:"/api/map/task/" + employee_name + "/" + task_name,
+        url:"/api/map/" + employee_name + "/" + task_name,
         data:$.toJSON({
             "quantity":quantity
         }),
@@ -83,7 +83,7 @@ map_quantity = function (employee_name, task_name, quantity, success_handler, er
 del_quantity = function (employee_name, task_name, success_handler, error_handler) {
     $.ajax({
         type:"DELETE",
-        url:"/api/map/task/" + employee_name + "/" + task_name,
+        url:"/api/map/" + employee_name + "/" + task_name,
         data:$.toJSON({
             "quantity":true
         }),

@@ -33,11 +33,15 @@ get '/' do
   haml :index
 end
 
-get '/view/employees' do
-  haml :manage_employees, :locals => {:engine => engine}
+get '/view/employees/workload' do
+  haml :manage_employees_workload, :locals => {:engine => engine}
 end
 
-get "/view/tasks" do
+get '/view/employees/quantities' do
+  haml :manage_employees_quantities, :locals => {:engine => engine}
+end
+
+get '/view/tasks' do
   haml :manage_tasks, :locals => {:engine => engine}
 end
 

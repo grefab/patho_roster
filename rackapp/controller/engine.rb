@@ -33,8 +33,8 @@ class Engine
 
   # MAPPINGS
 
-  def get_tasks_per_employee(employee_name)
-    @employee_task_mapper.get_tasks_for_employee employee_name
+  def get_mapping_for_employee(employee_name)
+    @employee_task_mapper.get_mapping_for_employee employee_name
   end
 
   def map_workload(employee_name, task_name, workload)

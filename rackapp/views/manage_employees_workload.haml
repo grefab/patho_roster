@@ -84,7 +84,7 @@
   });
 
 %h1
-  Manage Employees
+  Manage Task Workload Per Employee
 %div
   - if engine.get_employees.empty?
     No employees defined yet.
@@ -121,9 +121,9 @@
               %input{:type => "submit", :value => "Delete", :onclick => "del_employee(\"#{employee.name}\", update_ui)"}
           - engine.get_tasks.each do |task|
             %td{:class => "changeable_cell"}
-              - tasks_per_employee = engine.get_tasks_per_employee employee.name
-              - if tasks_per_employee.has_key? task.name
-                #{engine.get_tasks_per_employee(employee.name)[task.name]}
+              - mapping_per_employee = engine.get_mapping_for_employee employee.name
+              - if mapping_per_employee[:workload].has_key? task.name
+                #{mapping_per_employee[:workload][task.name]}
 
 %div
   %label{:for => "new_employee_name"} Name:
