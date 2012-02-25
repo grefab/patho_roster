@@ -67,9 +67,12 @@ class Engine
 
   def set_value_for_task(task_name, value_name, value)
     case
-      when value_name.to_s == "cap_min" then set_cap_min_for_task task_name, value
-      when value_name.to_s == "cap_max" then set_cap_max_for_task task_name, value
-      when value_name.to_s == "workload" then set_workload_for_task task_name, value
+      when value_name.to_s == "cap_min" then
+        set_cap_min_for_task task_name, value
+      when value_name.to_s == "cap_max" then
+        set_cap_max_for_task task_name, value
+      when value_name.to_s == "workload" then
+        set_workload_for_task task_name, value
     end
   end
 
@@ -79,6 +82,35 @@ class Engine
   def to_json
     data = {:workload_per_employees => get_workload_per_employees_for_export, :tasks => get_tasks_for_export}
     JSON.generate data
+  end
+
+  def get_calculated_solution
+    input_data = to_json
+    File.open("../logic/input.json", 'w') { |f| f.write(input_data) }
+    stdout = `cd ../logic; ./go.sh input.json`
+    raw_solution = stdout #.gsub("\n", "<br/>").gsub(" ", "&nbsp;")
+
+    begin
+      parsed_solution = JSON.parse raw_solution
+
+      cells = {}
+      parsed_solution["cells"].each do |value|
+        c = value["cell"]
+        cells[{:employee => c["name"], :task => c["task"]}] = c["work_amount"]
+      end
+
+      sum_row = {}
+      parsed_solution["sum_row"].each do |value|
+        c = value["sum_cell"]
+        sum_row[c["task"].to_sym] = c["sum_work"]
+      end
+
+      final_data = {:cells => cells, :sum_row => sum_row}
+    rescue
+      final_data = {}
+    end
+
+    final_data
   end
 
   def get_workload_per_employees_for_export
