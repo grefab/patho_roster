@@ -76,9 +76,8 @@ post '/api/map/task/:employee/:task' do
 
   data = JSON.parse request.body.read
   workload = data["workload"]
-  quantity = data["quantity"]
 
-  engine.map_task_to_employee employee_name, task_name, workload, quantity
+  engine.map_task_to_employee employee_name, task_name, workload
 
   status 200
 end
