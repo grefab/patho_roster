@@ -122,7 +122,10 @@ class Engine
     employees.each do |employee|
       if employee.working # only export working employees
         get_mapping_for_employee(employee.name).each do |mapping|
-          workload_per_employees << {:workload_per_employee => {:name => employee.name, :task_name => mapping[0], :task_workload => mapping[1][:workload]}}
+          workload_per_employee = {name: employee.name, task_name: mapping[0]}
+          workload_per_employee[:task_workload] = mapping[1][:workload] unless mapping[1][:workload].nil?
+          workload_per_employee[:task_quantity] = mapping[1][:quantity] unless mapping[1][:quantity].nil?
+          workload_per_employees << {:workload_per_employee => workload_per_employee}
         end
       end
     end
