@@ -30,16 +30,19 @@ class Engine
     @employee_manager.set_employee_working_by_name employee_name, working
   end
 
+
+  # MAPPINGS
+
   def get_tasks_per_employee(employee_name)
     @employee_task_mapper.get_tasks_for_employee employee_name
   end
 
-  def map_task_to_employee(employee_name, task_name, workload)
-    @employee_task_mapper.map_task_to_employee employee_name, task_name, workload
+  def map_workload(employee_name, task_name, workload)
+    @employee_task_mapper.mapping(employee_name, task_name).set_workload(workload)
   end
 
-  def del_task_from_employee(employee_name, task_name)
-    @employee_task_mapper.del_task_from_employee employee_name, task_name
+  def map_quantity(employee_name, task_name, quantity)
+    @employee_task_mapper.mapping(employee_name, task_name).set_quantity(quantity)
   end
 
 

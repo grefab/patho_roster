@@ -31,13 +31,48 @@ del_employee = function (employee_name, success_handler, error_handler) {
     });
 };
 
-map_task_to_employee = function (employee_name, task_name, workload, quantity, success_handler, error_handler) {
+map_workload = function (employee_name, task_name, workload, success_handler, error_handler) {
     $.ajax({
         type:"POST",
         url:"/api/map/task/" + employee_name + "/" + task_name,
         data:$.toJSON({
-            "workload":workload,
+            "workload":workload
+        }),
+        success:success_handler,
+        error:error_handler
+    });
+};
+
+del_workload = function (employee_name, task_name, success_handler, error_handler) {
+    $.ajax({
+        type:"DELETE",
+        url:"/api/map/task/" + employee_name + "/" + task_name,
+        data:$.toJSON({
+            "workload":true
+        }),
+        success:success_handler,
+        error:error_handler
+    });
+};
+
+map_quantity = function (employee_name, task_name, quantity, success_handler, error_handler) {
+    $.ajax({
+        type:"POST",
+        url:"/api/map/task/" + employee_name + "/" + task_name,
+        data:$.toJSON({
             "quantity":quantity
+        }),
+        success:success_handler,
+        error:error_handler
+    });
+};
+
+del_quantity = function (employee_name, task_name, success_handler, error_handler) {
+    $.ajax({
+        type:"DELETE",
+        url:"/api/map/task/" + employee_name + "/" + task_name,
+        data:$.toJSON({
+            "quantity":true
         }),
         success:success_handler,
         error:error_handler

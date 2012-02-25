@@ -38,7 +38,7 @@
             // number we can use
             var number = parseInt(content);
 
-            map_task_to_employee(employee, task, number, null,
+            map_workload(employee, task, number,
               function() {
                 $cell.html(number);
               },
@@ -48,7 +48,7 @@
             );
           } else if(content.match(/^$|^0$/)) {
             // empty or zero, so delete
-            del_task_from_employee(employee, task,
+            del_workload(employee, task,
               function() {
                 $cell.html("");
               },

@@ -46,7 +46,6 @@ get '/view/solution' do
 end
 
 
-
 #
 # API
 #
@@ -67,6 +66,17 @@ delete '/api/employee/:name' do
   status 200
 end
 
+post '/api/map/working/:employee' do
+  employee_name = params[:employee]
+
+  data = JSON.parse request.body.read
+  working = data["working"]
+
+  engine.set_employee_working employee_name, working
+
+  status 200
+end
+
 
 # TASK MAPPING
 
@@ -76,8 +86,10 @@ post '/api/map/task/:employee/:task' do
 
   data = JSON.parse request.body.read
   workload = data["workload"]
+  quantity = data["quantity"]
 
-  engine.map_task_to_employee employee_name, task_name, workload
+  engine.map_workload employee_name, task_name, workload if workload
+  engine.map_quantity employee_name, task_name, quantity if quantity
 
   status 200
 end
@@ -85,18 +97,16 @@ end
 delete '/api/map/task/:employee/:task' do
   employee_name = params[:employee]
   task_name = params[:task]
-  engine.del_task_from_employee employee_name, task_name
-
-  status 200
-end
-
-post '/api/map/working/:employee' do
-  employee_name = params[:employee]
 
   data = JSON.parse request.body.read
-  working = data["working"]
+  workload = data["workload"]
+  quantity = data["quantity"]
 
-  engine.set_employee_working employee_name, working
+#  puts "Workload: #{workload}"
+#  puts "Quantity: #{quantity}"
+
+  engine.map_workload employee_name, task_name, nil if workload
+  engine.map_quantity employee_name, task_name, nil if quantity
 
   status 200
 end
