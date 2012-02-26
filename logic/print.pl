@@ -48,9 +48,12 @@ printOne(e(X),Task) :-
         work(Task,Total,_,_),
         Actual is ceiling(Workload * min(1,Total/Sum)),
         write(Actual),
-        %write(' ('),
-        %write(Workload),
-        %write(')'),
+        (quantity(X,Task,Quantity) ->
+        (QQ is Quantity + 1,
+            write(' ('),
+            write(QQ),
+            write(')')
+        );true),
         write(';')
     );
     write(' ;')).

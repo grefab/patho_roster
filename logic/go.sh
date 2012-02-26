@@ -4,5 +4,5 @@ UniqueFolder=tmp
 Data=$UniqueFolder/data.tmp
 File=\'$1\'
 
-prolog -f j2p.pl -g 'start('$File')' -t 2>>/dev/null halt > $Data
+prolog -f j2p.pl -g 'start('$File')' -t halt 2>>/dev/null > $Data
 ./run.sh $Data 27 5
