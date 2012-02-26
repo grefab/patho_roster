@@ -36,7 +36,7 @@ printOne(e(X),Task) :-
         (quantity(X,Task,Quantity) ->
         (
             QQ is Quantity + 1,
-            write2(Actual,Workload)
+            write2(Actual,QQ)
         );
             writeA(Actual)
         ),
