@@ -27,7 +27,15 @@ writeTask([task=json([name=Task,cap_min=Min,cap_max=Max,workload=Workload])]) :-
     !,
     writeF([work,Task,Workload,Min,Max]).
 
+writeTask([workload_per_employee=json([name=Name,task_name=Task,task_workload=Workload],quantity_workdload=X)]) :-
+    !,
+    writeF([perform,Name,Task,Workload]).
+
 writeTask([workload_per_employee=json([name=Name,task_name=Task,task_workload=Workload])]) :-
+    !,
+    writeF([perform,Name,Task,Workload]).
+
+writeTask([workload_per_employee=json([name=Name,task_name=Task,quantity_workload=Workload])]) :-
     !,
     writeF([perform,Name,Task,Workload]).
 
