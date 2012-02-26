@@ -46,11 +46,11 @@ printOne(e(X),Task) :-
         findall(Z,assign(_,Task,Z),L),
         sumlist(L,Sum),
         work(Task,Total,_,_),
-        Actual is round(Workload * min(1,Total/Sum)),
+        Actual is ceiling(Workload * min(1,Total/Sum)),
         write(Actual),
-        write(' ('),
-        write(Workload),
-        write(')'),
+        %write(' ('),
+        %write(Workload),
+        %write(')'),
         write(';')
     );
     write(' ;')).
@@ -58,9 +58,12 @@ printOne(e(X),Task) :-
 printOne(sum,Task) :-
     findall(X,assign(_,Task,X),L),
     sumlist(L,Sum),
-    write(Sum),
-    write(' ('),
     work(Task,Workload,_,_),
+    ( Sum > Workload ->
+      write(Workload);
+      write(Sum)
+    ),
+    write(' ('),
     Fraction is round(100*Sum/Workload),
     write(Fraction),
     write('%)'), 

@@ -1,4 +1,5 @@
 % input work(task,workload,min,max).
+% input history(employee,task,history).
 % input perform(employee,task,workload). 
 
 employee(E) :- perform(E,_,_).
@@ -17,12 +18,16 @@ understaffed(Task) :- work(Task,Workload,_,_), #sum [ assign(_,Task,Work) = Work
 
 ground(Employee,Task,(100*Work)/Workload) :- perform(Employee,Task,Work), work(Task,Workload,_,_). 
 
-understaffed(Employee,Task,Work) :- understaffed(Task), ground(Employee,Task,Work), assign(Employee,Task). 
+understaffed(Employee,Task) :- understaffed(Task), assign(Employee,Task). 
 
-#maximize[assign(Employee,Task) : ground(Employee,Task,Work)  = Work @1].
+% assign at least min people
+#minimize[min(_) @4].
 
-#maximize[understaffed(Employee,Task,Workload) : ground(Employee,Task,Workload) = Workload @2].
-
+% no understaffed
 #minimize[understaffed(Task) : task(Task) @3].
 
-#minimize[min(_) @4].
+% if understaffed, equal distribution of workload in % 
+#maximize[understaffed(Employee,Task) : ground(Employee,Task,Workload) = Workload @2].
+
+% increase workload as much as possible in %
+#maximize[assign(Employee,Task) : ground(Employee,Task,Work) = Work @1].
