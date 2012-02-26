@@ -14,7 +14,7 @@ class Engine
 
   # EMPLOYEES
 
-  def get_all_employees
+  def get_employees
     @employee_manager.get_all_employees
   end
 
@@ -30,16 +30,19 @@ class Engine
     @employee_manager.set_employee_working_by_name employee_name, working
   end
 
-  def get_tasks_per_employee(employee_name)
-    @employee_task_mapper.get_tasks_for_employee employee_name
+
+  # MAPPINGS
+
+  def get_mapping_for_employee(employee_name)
+    @employee_task_mapper.get_mapping_for_employee employee_name
   end
 
-  def map_task_to_employee(employee_name, task_name, workload)
-    @employee_task_mapper.map_task_to_employee employee_name, task_name, workload
+  def map_workload(employee_name, task_name, workload)
+    @employee_task_mapper.mapping(employee_name, task_name).set_workload(workload)
   end
 
-  def del_task_from_employee(employee_name, task_name)
-    @employee_task_mapper.del_task_from_employee employee_name, task_name
+  def map_quantity(employee_name, task_name, quantity)
+    @employee_task_mapper.mapping(employee_name, task_name).set_quantity(quantity)
   end
 
 
@@ -67,9 +70,12 @@ class Engine
 
   def set_value_for_task(task_name, value_name, value)
     case
-      when value_name.to_s == "cap_min" then set_cap_min_for_task task_name, value
-      when value_name.to_s == "cap_max" then set_cap_max_for_task task_name, value
-      when value_name.to_s == "workload" then set_workload_for_task task_name, value
+      when value_name.to_s == "cap_min" then
+        set_cap_min_for_task task_name, value
+      when value_name.to_s == "cap_max" then
+        set_cap_max_for_task task_name, value
+      when value_name.to_s == "workload" then
+        set_workload_for_task task_name, value
     end
   end
 
@@ -81,13 +87,45 @@ class Engine
     JSON.generate data
   end
 
+  def get_calculated_solution
+    input_data = to_json
+    File.open("../logic/input.json", 'w') { |f| f.write(input_data) }
+    stdout = `cd ../logic; ./go.sh input.json`
+    raw_solution = stdout #.gsub("\n", "<br/>").gsub(" ", "&nbsp;")
+
+    begin
+      parsed_solution = JSON.parse raw_solution
+
+      cells = {}
+      parsed_solution["cells"].each do |value|
+        c = value["cell"]
+        cells[{:employee => c["name"], :task => c["task"]}] = c["work_amount"]
+      end
+
+      sum_row = {}
+      parsed_solution["sum_row"].each do |value|
+        c = value["sum_cell"]
+        sum_row[c["task"].to_sym] = c["sum_work"]
+      end
+
+      final_data = {:cells => cells, :sum_row => sum_row}
+    rescue
+      final_data = {}
+    end
+
+    final_data
+  end
+
   def get_workload_per_employees_for_export
     employees = @employee_manager.get_all_employees
     workload_per_employees = Array.new
     employees.each do |employee|
       if employee.working # only export working employees
-        get_tasks_per_employee(employee.name).each do |task|
-          workload_per_employees << {:workload_per_employee => {:name => employee.name, :task_name => task[0], :task_workload => task[1]}}
+        get_mapping_for_employee(employee.name).each do |mapping|
+          workload_per_employee = {name: employee.name, task_name: mapping[0]}
+          workload_per_employee[:task_workload] = mapping[1][:workload] unless mapping[1][:workload].nil?
+          workload_per_employee[:task_quantity] = mapping[1][:quantity] unless mapping[1][:quantity].nil?
+          workload_per_employees << {:workload_per_employee => workload_per_employee}
         end
       end
     end

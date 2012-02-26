@@ -29,120 +29,118 @@ engine = Engine.new
 # ROUTES
 #
 
-# entry point
 get '/' do
   haml :index
 end
 
+get '/view/employees/workload' do
+  haml :manage_employees_workload, :locals => {:engine => engine}
+end
+
+get '/view/employees/quantities' do
+  haml :manage_employees_quantities, :locals => {:engine => engine}
+end
+
+get '/view/tasks' do
+  haml :manage_tasks, :locals => {:engine => engine}
+end
+
+get '/view/solution' do
+  haml :solve_problem, :locals => {:output => engine.get_calculated_solution, :engine => engine}
+end
+
+
+#
+# API
+#
 
 # EMPLOYEES
-
-get '/view/employees' do
-  haml :manage_employees, :locals => {:engine => engine}
-end
 
 put '/api/employee/:name' do
   employee_name = params[:name]
   engine.add_employee employee_name
 
-  halt 200
+  status 201
+end
+
+post '/api/employee/:name' do
+  employee_name = params[:name]
+
+  data = JSON.parse request.body.read
+  working = data["working"]
+
+  engine.set_employee_working employee_name, working
+
+  status 200
 end
 
 delete '/api/employee/:name' do
   employee_name = params[:name]
   engine.del_employee employee_name
 
-  halt 200
+  status 200
 end
 
 
-# TASK MAPPING
+# MAPPING
 
-post '/api/map/task/:employee/:task/:workload' do
+post '/api/map/:employee/:task' do
   employee_name = params[:employee]
   task_name = params[:task]
-  workload = params[:workload]
-  engine.map_task_to_employee employee_name, task_name, workload
 
-  halt 200
+  data = JSON.parse request.body.read
+  workload = data["workload"]
+  quantity = data["quantity"]
+
+  engine.map_workload employee_name, task_name, workload if workload
+  engine.map_quantity employee_name, task_name, quantity if quantity
+
+  status 200
 end
 
-delete '/api/map/task/:employee/:task' do
+delete '/api/map/:employee/:task' do
   employee_name = params[:employee]
   task_name = params[:task]
-  engine.del_task_from_employee employee_name, task_name
 
-  halt 200
-end
+  data = JSON.parse request.body.read
+  workload = data["workload"]
+  quantity = data["quantity"]
 
-post '/api/map/working/:employee/:working' do
-  employee_name = params[:employee]
-  working = params[:working]
-  engine.set_employee_working employee_name, working
+#  puts "Workload: #{workload}"
+#  puts "Quantity: #{quantity}"
 
-  halt 200
+  engine.map_workload employee_name, task_name, nil if workload
+  engine.map_quantity employee_name, task_name, nil if quantity
+
+  status 200
 end
 
 
 # TASKS
 
-get "/view/tasks" do
-  haml :manage_tasks, :locals => {:engine => engine}
-end
-
-put '/api/task/:task/:cap_min/:cap_max/:workload' do
+put '/api/task/:task' do
   name = params[:task]
-  cap_min = params[:cap_min]
-  cap_max = params[:cap_max]
-  workload = params[:workload]
+
+  data = JSON.parse request.body.read
+  cap_min = data["cap_min"]
+  cap_max = data["cap_max"]
+  workload = data["workload"]
+
   engine.add_task name, cap_min, cap_max, workload
 
-  halt 200
+  status 201
 end
 
-post '/api/task/:task/:value_name/:value' do
+post '/api/task/:task/:value_name' do
   task_name = params[:task]
   value_name = params[:value_name]
-  value = params[:value]
+
+  data = JSON.parse request.body.read
+  value = data["value"]
+
   engine.set_value_for_task task_name, value_name, value
 
-  halt 200
-end
-
-
-# SOLUTIONS
-
-get '/view/solution' do
-  input_data = engine.to_json
-  File.open("../logic/input.json", 'w') { |f| f.write(input_data) }
-  stdout = `cd ../logic; ./go.sh input.json`
-  raw_solution = stdout #.gsub("\n", "<br/>").gsub(" ", "&nbsp;")
-
-  begin
-    parsed_solution = JSON.parse raw_solution
-
-    cells = {}
-    parsed_solution["cells"].each do |value|
-      c = value["cell"]
-      cells[{:employee => c["name"], :task => c["task"]}] = c["work_amount"]
-    end
-
-    sum_row = {}
-    parsed_solution["sum_row"].each do |value|
-      c = value["sum_cell"]
-      sum_row[c["task"].to_sym] = c["sum_work"]
-    end
-
-    final_data = {:cells => cells, :sum_row => sum_row}
-  rescue
-    final_data = {}
-  end
-
-  haml :solve_problem, :locals => {:output => final_data, :engine => engine}
-end
-
-get '/view/result' do
-  haml :show_result
+  status 200
 end
 
 

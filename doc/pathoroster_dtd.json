@@ -3,7 +3,7 @@
 
 	workload_per_employees:
 	[
-		workload_per_employee: { name: EMPLOYEE_NAME, task_name: TASK_NAME, task_workload: TASK_WORKLOAD }
+		workload_per_employee: { name: EMPLOYEE_NAME, task_name: TASK_NAME, task_workload: TASK_WORKLOAD, task_quantity: TASK_QUANTITY }
 	],
 
 

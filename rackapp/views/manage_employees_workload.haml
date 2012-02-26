@@ -3,64 +3,11 @@
     window.location.reload();
   }
 
-
-  add_employee = function() {
-    var employee_name = $(':input[id="new_employee_name"]').val();
-
-    $.ajax({
-      type: "PUT",
-      url: "/api/employee/" + employee_name,
-      success: function(data) {
-        update_ui();
-      }
-    });
-  }
-
-  del_employee = function(employee_name) {
-    $.ajax({
-      type: "DELETE",
-      url: "/api/employee/" + employee_name,
-      success: function(data) {
-        update_ui();
-      }
-    });
-  }
-
-
-  set_working_for_employee = function(employee_name) {
+  handle_working = function(employee_name) {
     var working = $(':input[id="check_working_' + employee_name + '"]:checked').val() !== undefined;
 
-    $.ajax({
-      type: "POST",
-      url: "/api/map/working/" + employee_name + "/" + working,
-      success: function(data) {
-        //update_ui();
-      },
-      error: function() {
-        update_ui();
-      }
-    });
+    set_working_for_employee(employee_name, working, null, update_ui)
   }
-
-
-  map_task_to_employee = function(employee_name, task_name, workload, success_handler, error_handler) {
-    $.ajax({
-      type: "POST",
-      url: "/api/map/task/" + employee_name + "/" + task_name + "/" + workload,
-      success: success_handler,
-      error: error_handler
-    });
-  }
-
-  del_task_from_employee = function(employee_name, task_name, success_handler, error_handler) {
-    $.ajax({
-      type: "DELETE",
-      url: "/api/map/task/" + employee_name + "/" + task_name,
-      success: success_handler,
-      error: error_handler
-    });
-  }
-
 
   $(function() {
     $('.changeable_cell').click(function() {
@@ -91,7 +38,7 @@
             // number we can use
             var number = parseInt(content);
 
-            map_task_to_employee(employee, task, number,
+            map_workload(employee, task, number,
               function() {
                 $cell.html(number);
               },
@@ -101,7 +48,7 @@
             );
           } else if(content.match(/^$|^0$/)) {
             // empty or zero, so delete
-            del_task_from_employee(employee, task,
+            del_workload(employee, task,
               function() {
                 $cell.html("");
               },
@@ -137,9 +84,9 @@
   });
 
 %h1
-  Manage Employees
+  Manage Task Workload Per Employee
 %div
-  - if engine.get_all_employees.empty?
+  - if engine.get_employees.empty?
     No employees defined yet.
   - else
     %table
@@ -160,25 +107,25 @@
       -#  %th workload
       -#  - engine.get_tasks.each do |task|
       -#    %td #{task[:workload]}
-      - engine.get_all_employees.each do |employee|
+      - engine.get_employees.each do |employee|
         %tr
           %th
             %span
               - if employee.working
-                %input{:id => "check_working_#{employee.name}", :type => "checkbox", :checked => "checked", :onchange => "set_working_for_employee(\"#{employee.name}\")"}
+                %input{:id => "check_working_#{employee.name}", :type => "checkbox", :checked => "checked", :onchange => "handle_working(\"#{employee.name}\")"}
               - else
-                %input{:id => "check_working_#{employee.name}", :type => "checkbox", :onchange => "set_working_for_employee(\"#{employee.name}\")"}
+                %input{:id => "check_working_#{employee.name}", :type => "checkbox", :onchange => "handle_working(\"#{employee.name}\")"}
             %span{:class => "employee_row_header"}
               #{employee.name}
             %span
-              %input{:type => "submit", :value => "Delete", :onclick => "del_employee(\"#{employee.name}\")"}
+              %input{:type => "submit", :value => "Delete", :onclick => "del_employee(\"#{employee.name}\", update_ui)"}
           - engine.get_tasks.each do |task|
             %td{:class => "changeable_cell"}
-              - tasks_per_employee = engine.get_tasks_per_employee employee.name
-              - if tasks_per_employee.has_key? task.name
-                #{engine.get_tasks_per_employee(employee.name)[task.name]}
+              - mapping_per_employee = engine.get_mapping_for_employee employee.name
+              - if mapping_per_employee[task.name] && mapping_per_employee[task.name].has_key?(:workload)
+                #{mapping_per_employee[task.name][:workload]}
 
 %div
   %label{:for => "new_employee_name"} Name:
   %input{:type => "text", :id => "new_employee_name"}
-  %input{:type => "submit", :value => "Add", :onclick => "add_employee()"}
+  %input{:type => "submit", :value => "Add", :onclick => "add_employee($(':input[id=\"new_employee_name\"]').val(), update_ui)"}
