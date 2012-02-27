@@ -14,7 +14,7 @@ quantity_min(Task,MQ) :-
 quantity_assign(E,Task,((Q-MQ)*100)/TQ) :- 
     TQ = #sum [quantity(_,Task,Q_) = Q_],
     quantity_min(Task,MQ),
-    perform(E,Task,Q).
+    quantity(E,Task,Q).
 
 { assign(E,S,W) : perform(E,S,W) } 1  :- employee(E).
 
