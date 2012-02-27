@@ -56,4 +56,3 @@ cat $Output | grep 'work' |  tail -n 1 | sed 's/ /\n/g' | sed 's/$/./g' | sort  
 prolog -f ../../print.pl -g 'start' -t halt 2>> $Error > $PrettyOutput
 #column -t -s ';' $PrettyOutput
 prolog -f ../../print_json.pl -g start -t halt 2>> $Error
-cd -
