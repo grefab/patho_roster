@@ -1,6 +1,7 @@
 % input work(task,workload,min,max).
 % input quantity(employee,task,quantity).
 % input perform(employee,task,workload). 
+#hide assign/2. 
 
 employee(E) :- perform(E,_,_).
 task(T) :- work(T,_,_,_). 

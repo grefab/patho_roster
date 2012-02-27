@@ -2,7 +2,7 @@ writeN(0,_) :- !.
 writeN(N,T) :- write(T), NN is N-1, writeN(NN,T). 
 
 start :- 
-    consult('tmp/foutput.tmp'),
+    consult(foutput),
     first(X),
     write(' ;'), printAll(head,X),
     writeN(8,'-'),write(' ;'), printAll(line,X),

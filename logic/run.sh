@@ -2,14 +2,19 @@
 
 Data=$1
 Model=model.lp
-UniqueFolder=tmp
+UniqueFolder=$(dirname $1)
+Input=input.tmp
 
-Input=$UniqueFolder/input.tmp
-Problem=$UniqueFolder/problem.tmp
-Output=$UniqueFolder/output.tmp
-FormatOutput=$UniqueFolder/foutput.tmp
-PrettyOutput=$UniqueFolder/prettyOutput.csv
-Error=$UniqueFolder/error.tmp
+cat $Model > $UniqueFolder/$Input
+cat .$UniquFolder/$Data >> $UniqueFolder/$Input
+
+cd $UniqueFolder
+
+Problem=problem.tmp
+Output=output.tmp
+FormatOutput=foutput
+PrettyOutput=prettyOutput.csv
+Error=error.tmp
 Option=' --time-limit='$3' '
 
 Strategy=$2
@@ -45,16 +50,10 @@ case $Strategy in
     28) Option=$Option'--trans-ext=dynamic --sat-pre=20,25,120 --initial-look=10 --restarts=no --heu=VSIDS';;
 esac
 
-#echo start
-#echo xxxxxxxxxx $Strategy $Data xxxxxxxxxxx
-#echo Option      : $Option
-
-cat $Model > $Input
-cat $Data >> $Input
-
 cat $Input | gringo > $Problem
 cat $Problem | clasp $Option 2>>$Error > $Output 
 cat $Output | grep 'work' |  tail -n 1 | sed 's/ /\n/g' | sed 's/$/./g' | sort  > $FormatOutput
-prolog -f print.pl -g start -t halt 2>> $Error > $PrettyOutput
+prolog -f ../../print.pl -g 'start' -t halt 2>> $Error > $PrettyOutput
 #column -t -s ';' $PrettyOutput
-prolog -f print_json.pl -g start -t halt 2>> $Error
+prolog -f ../../print_json.pl -g start -t halt 2>> $Error
+cd -

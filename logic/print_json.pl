@@ -3,7 +3,7 @@ write2(X,Y) :- write('\"'), write(X), write(' \('), write(Y), write('\)\"').
 write3(X,Y) :- write('\"'), write(X), write(' \('), write(Y), write('%\)\"').
 
 start :- 
-    consult('tmp/foutput.tmp'),
+    consult(foutput),
     first(First),
     write('\{\"cells\":\['),
     findall(X,in_action(X),[A|Es]),
