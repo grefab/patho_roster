@@ -34,7 +34,7 @@ ground(Employee,Task,(100*Work)/Workload) :-
 
 understaffed(Employee,Task) :- 
     understaffed(Task), 
-    assign(Employee,Task). 
+    perform(Employee,Task,_). 
 
 % assign at least min people
 #minimize[min(_) @5].
