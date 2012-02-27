@@ -46,7 +46,7 @@ understaffed(Employee,Task) :-
 #maximize[understaffed(Employee,Task) : ground(Employee,Task,Workload) = Workload @3].
 
 % respect the quantity
-#minimize[quantity_assign(E,T,W) = W @2].
+#minimize[quantity_assign(E,T,W) = W*W @2].
 
 % increase workload as much as possible in %
 #maximize[assign(Employee,Task) : ground(Employee,Task,Work) = Work @1].
