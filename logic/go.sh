@@ -1,5 +1,5 @@
 #!/bin/bash
-UniqueFolder=tmp/$(date +%Y_%m___%d_%H_%M_%S)
+UniqueFolder=tmp/$(date +%Y_%m_%d___%H_%M_%S)
 mkdir -p $UniqueFolder
 
 Data=$UniqueFolder/data.tmp
