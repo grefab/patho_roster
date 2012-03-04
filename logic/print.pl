@@ -1,3 +1,5 @@
+quantity(x,x,x).
+
 writeN(0,_) :- !. 
 writeN(N,T) :- write(T), NN is N-1, writeN(NN,T). 
 

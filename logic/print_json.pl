@@ -1,3 +1,5 @@
+quantity(x,x,x). 
+
 writeA(X) :- write('\"'), string_to_atom(X,Y),write(Y), write('\"'). 
 write2(X,Y) :- write('\"'), write(X), write(' \('), write(Y), write('\)\"').
 write3(X,Y) :- write('\"'), write(X), write(' \('), write(Y), write('%\)\"').
