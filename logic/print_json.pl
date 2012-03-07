@@ -1,9 +1,11 @@
+quantity(x,x,x). 
+
 writeA(X) :- write('\"'), string_to_atom(X,Y),write(Y), write('\"'). 
 write2(X,Y) :- write('\"'), write(X), write(' \('), write(Y), write('\)\"').
 write3(X,Y) :- write('\"'), write(X), write(' \('), write(Y), write('%\)\"').
 
 start :- 
-    consult('tmp/foutput.tmp'),
+    consult(foutput),
     first(First),
     write('\{\"cells\":\['),
     findall(X,in_action(X),[A|Es]),
@@ -33,7 +35,13 @@ printOne(e(X),Task) :-
         write(',\"task\":'),
         writeA(Task),
         write(',\"work_amount\":'),
-        write2(Actual,Workload),
+        (quantity(X,Task,Quantity) ->
+        (
+            QQ is Quantity + 1,
+            write2(Actual,QQ)
+        );
+            writeA(Actual)
+        ),
         write('\}\}')
     );
     true).
@@ -42,6 +50,10 @@ printOne(sum,Task) :-
     findall(X,assign(_,Task,X),L),
     sumlist(L,Sum),
     work(Task,Workload,_,_),
+    ( Sum > Workload ->
+      SumOut = Workload;
+      SumOut = Sum
+    ),
     Fraction is round(100*Sum/Workload),
     (first(Task)->true;write(',')),
     write('\{'),
@@ -49,7 +61,7 @@ printOne(sum,Task) :-
     write(':\{\"task\":'),
     writeA(Task),
     write(',\"sum_work\":'),
-    write3(Sum,Fraction),
+    write3(SumOut,Fraction),
     write('\}\}').
 
 
