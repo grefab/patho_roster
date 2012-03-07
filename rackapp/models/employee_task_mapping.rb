@@ -2,6 +2,7 @@ require "mongoid"
 
 class EmployeeTaskMapping
   include Mongoid::Document
+  include Mongoid::Timestamps
 
   field :employee, type: String
   field :task, type: String
