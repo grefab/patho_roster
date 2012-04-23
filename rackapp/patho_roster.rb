@@ -5,6 +5,8 @@ require 'uuidtools'
 require 'uri'
 require "mongoid"
 
+require_relative "helper/html_snippets"
+
 Mongoid.configure { |config| config.master = Mongo::Connection.new.db("patho_roster") }
 
 require_relative 'controller/engine'
@@ -30,23 +32,23 @@ engine = Engine.new
 #
 
 get '/' do
-  haml :index
+  haml :index, :locals => {:snippets => HtmlSnippets.new}
 end
 
 get '/view/employees/workload' do
-  haml :manage_employees_workload, :locals => {:engine => engine}
+  haml :manage_employees_workload, :locals => {:snippets => HtmlSnippets.new, :engine => engine}
 end
 
 get '/view/employees/quantities' do
-  haml :manage_employees_quantities, :locals => {:engine => engine}
+  haml :manage_employees_quantities, :locals => {:snippets => HtmlSnippets.new, :engine => engine}
 end
 
 get '/view/tasks' do
-  haml :manage_tasks, :locals => {:engine => engine}
+  haml :manage_tasks, :locals => {:snippets => HtmlSnippets.new, :engine => engine}
 end
 
 get '/view/solution' do
-  haml :solve_problem, :locals => {:output => engine.get_calculated_solution, :engine => engine}
+  haml :solve_problem, :locals => {:snippets => HtmlSnippets.new, :output => engine.get_calculated_solution, :engine => engine}
 end
 
 
