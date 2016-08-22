@@ -25,5 +25,5 @@ cat $Input | $Gringo > $Problem
 cat $Problem | $Clasp $Option 2>>$Error > $Output 
 cat $Output | grep 'work' |  tail -n 1 | sed 's/ /\n/g' | sed 's/$/./g' | sort  > $FormatOutput
 prolog -f ../../print.pl -g 'start' -t halt 2>> $Error > $PrettyOutput
-column -t -s ';' $PrettyOutput
+#column -t -s ';' $PrettyOutput
 prolog -f ../../print_json.pl -g start -t halt 2>> $Error
