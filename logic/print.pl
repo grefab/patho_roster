@@ -1,9 +1,9 @@
-quantity(x,x,x).
+%quantity(x,x,x).
 
-writeN(0,_) :- !. 
-writeN(N,T) :- write(T), NN is N-1, writeN(NN,T). 
+writeN(0,_) :- !.
+writeN(N,T) :- write(T), NN is N-1, writeN(NN,T).
 
-start :- 
+start :-
     consult(foutput),
     first(X),
     write(' ;'), printAll(head,X),
@@ -17,28 +17,28 @@ start :-
     write('sum;'), printAll(sum,X).
 
 
-printAll(What,Node) :- 
+printAll(What,Node) :-
     printOne(What,Node),
     (edge(Node,Next) ->
-    printAll(What,Next); 
-    nl). 
+    printAll(What,Next);
+    nl).
 
-printOne(line,X) :- 
+printOne(line,X) :-
     atom_length(X,N),
     writeN(N,'-'), write(';').
 
-printOne(head,X) :- 
+printOne(head,X) :-
     write(X), write(';').
 
-printOne(min,X) :- 
+printOne(min,X) :-
     work(X,_,N,_),
     write(N),write(';').
 
-printOne(max,X) :- 
+printOne(max,X) :-
     work(X,_,_,N),
     write(N),write(';').
 
-printOne(workload,X) :- 
+printOne(workload,X) :-
     work(X,W,_,_),
     write(W),write(';').
 
@@ -71,10 +71,10 @@ printOne(sum,Task) :-
     write(' ('),
     Fraction is round(100*Sum/Workload),
     write(Fraction),
-    write('%)'), 
+    write('%)'),
     write(';').
 
-first(registrering). 
+first(registrering).
 edge(registrering,lis_makro).
 edge(lis_makro,bi_makro).
 edge(bi_makro,fremforing).

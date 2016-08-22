@@ -1,25 +1,25 @@
-quantity(x,x,x). 
+%quantity(x,x,x).
 
-writeA(X) :- write('\"'), string_to_atom(X,Y),write(Y), write('\"'). 
-write2(X,Y) :- write('\"'), write(X), write(' \('), write(Y), write('\)\"').
-write3(X,Y) :- write('\"'), write(X), write(' \('), write(Y), write('%\)\"').
+writeA(X) :- write('\"'), string_to_atom(X,Y),write(Y), write('\"').
+write2(X,Y) :- write('\"'), write(X), write(' ('), write(Y), write(')\"').
+write3(X,Y) :- write('\"'), write(X), write(' ('), write(Y), write('%)\"').
 
-start :- 
+start :-
     consult(foutput),
     first(First),
-    write('\{\"cells\":\['),
+    write('{\"cells\":['),
     findall(X,in_action(X),[A|Es]),
     printAll(e(A),First),
     forall(member(E,Es),(write(',\n'),printAll(e(E),First))),
-    write('\],\n\"sum_row\":\['),
+    write('],\n\"sum_row\":['),
     printAll(sum,First),
-    write('\n\]\}\n').
+    write('\n]}\n').
 
-printAll(What,Node) :- 
+printAll(What,Node) :-
     printOne(What,Node),
     (edge(Node,Next) ->
-    printAll(What,Next); 
-    true). 
+    printAll(What,Next);
+    true).
 
 printOne(e(X),Task) :-
     (assign(X,Task,Workload) ->
@@ -28,7 +28,7 @@ printOne(e(X),Task) :-
         sumlist(L,Sum),
         work(Task,Total,_,_),
         Actual is ceiling(Workload * min(1,Total/Sum)),
-        write('\{'),
+        write('{'),
         writeA('cell'),
         write(':{\"name\":'),
         writeA(X),
@@ -42,7 +42,7 @@ printOne(e(X),Task) :-
         );
             writeA(Actual)
         ),
-        write('\}\}')
+        write('}}')
     );
     true).
 
@@ -56,16 +56,16 @@ printOne(sum,Task) :-
     ),
     Fraction is round(100*Sum/Workload),
     (first(Task)->true;write(',')),
-    write('\{'),
+    write('{'),
     writeA('sum_cell'),
-    write(':\{\"task\":'),
+    write(':{\"task\":'),
     writeA(Task),
     write(',\"sum_work\":'),
     write3(SumOut,Fraction),
-    write('\}\}').
+    write('}}').
 
 
-first(registrering). 
+first(registrering).
 edge(registrering,lis_makro).
 edge(lis_makro,bi_makro).
 edge(bi_makro,fremforing).
